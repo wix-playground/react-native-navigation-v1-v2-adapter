@@ -1,8 +1,8 @@
 import {Navigation} from 'react-native-navigation';
 import * as layoutGenerator from './layoutGenerator';
-import * as optionsGenerator from './optionsGenerator';
+import * as optionsConverter from './optionsConverter';
 
-function ScreenVisibilityListener ({willAppear, didAppear, willDisappear, didDisappear}) {
+function ScreenVisibilityListener({willAppear, didAppear, willDisappear, didDisappear}) {
   this.register = function () {
     Navigation.events().componentDidAppear((componentId, componentName) => {
       willAppear({screen: componentName});
@@ -12,20 +12,20 @@ function ScreenVisibilityListener ({willAppear, didAppear, willDisappear, didDis
       willDisappear({screen: componentName});
       didDisappear({screen: componentName});
     });
-  }
-};
+  };
+}
 
 Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
   Navigation.events().onAppLaunched(() => {
-    Navigation.setDefaultOptions(optionsGenerator.generateDefaultOptions(tabsStyle, appStyle));
+    Navigation.setDefaultOptions(optionsConverter.generateDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.generateBottomTabs(tabs, drawer));
   });
 };
 
-Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer}) => {
+Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components}) => {
   Navigation.events().onAppLaunched(() => {
-    Navigation.setDefaultOptions(optionsGenerator.generateDefaultOptions(tabsStyle, appStyle));
-    Navigation.setRoot(layoutGenerator.generateSingleScreen(screen, drawer));
+    Navigation.setDefaultOptions(optionsConverter.generateDefaultOptions(tabsStyle, appStyle));
+    Navigation.setRoot(layoutGenerator.generateSingleScreen(screen, drawer, components));
   });
 };
 
@@ -43,5 +43,4 @@ Navigation.registerComponent = (name, generator, store, provider) => {
 module.exports = {
   Navigation,
   ScreenVisibilityListener
-}
-;
+};

@@ -1,13 +1,13 @@
 import {Navigation} from 'react-native-navigation';
 import * as layoutGenerator from './layoutGenerator';
-import * as optionsGenerator from './optionsGenerator';
+import * as optionsConverter from './optionsConverter';
 
 export function generateNavigator(guid, component) {
   const navigator = {
     id: guid,
     setOnNavigatorEvent() {},
     push(params) {
-      Navigation.push(this.id, layoutGenerator.generateComponent(params))
+      Navigation.push(this.id, layoutGenerator.generateComponent(params));
     },
     pop() {
       Navigation.pop(this.id);
@@ -26,7 +26,7 @@ export function generateNavigator(guid, component) {
         topBar: {
           ...buttons
         }
-      })
+      });
     },
     setTitle({title}) {
       Navigation.mergeOptions(this.id, {
@@ -49,8 +49,8 @@ export function generateNavigator(guid, component) {
     toggleTabs({to, animated}) {
       Navigation.mergeOptions(this.id, {
         bottomTabs: {
-          visible: to === 'shown' ? true : false,
-          animated: animated
+          visible: to === 'shown',
+          animated
         }
       });
     },
@@ -80,15 +80,15 @@ export function generateNavigator(guid, component) {
     toggleNavBar({to, animated}) {
       Navigation.mergeOptions(this.id, {
         topBar: {
-          visible: to === 'shown' ? true : false,
+          visible: to === 'shown',
           animate: animated
         }
       });
     },
     setStyle(style) {
-      Navigation.mergeOptions(this.id, optionsGenerator.generateOptionsFromStyle(style));
+      Navigation.mergeOptions(this.id, optionsConverter.convertStyle(style));
     },
-  }
+  };
 
   return navigator;
 }

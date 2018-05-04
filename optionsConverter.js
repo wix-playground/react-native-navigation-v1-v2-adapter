@@ -1,5 +1,5 @@
 
-export function generateOptionsFromStyle(style) {
+export function convertStyle(style) {
   return {
     statusBarHidden: style.statusBarHidden,
     screenBackgroundColor: style.screenBackgroundColor,

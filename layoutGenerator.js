@@ -1,30 +1,11 @@
 import {generateNavigator} from './navigator';
 
-export function generateGuid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4();
-}
-
-function generateDrawer(center, left, right) {
-  return {
-    sideMenu: {
-      center,
-      left,
-      right
-    }
-  };
-}
-
-export function generateSingleScreen(screen, drawer) {
+export function generateSingleScreen(screen, drawer, components) {
   if (drawer) {
     return generateDrawer(generateSingleScreen(screen), generateComponent(drawer.left), generateComponent(drawer.right));
   }
 
-  return generateComponentStack(screen);
+  return generateComponentStack(screen, components);
 }
 
 export function generateBottomTabs(tabs, drawer) {
@@ -34,17 +15,11 @@ export function generateBottomTabs(tabs, drawer) {
 
   return {
     bottomTabs: {
-      children: tabs.map(tab => {
+      children: tabs.map((tab) => {
         return generateComponentStack(tab);
       })
     }
   };
-}
-
-export function generateBottomTabsChildren(tabs) {
-  return tabs.map(tab => {
-    return generateComponentStack(tab);
-  });
 }
 
 export function generateComponent(oldComponent) {
@@ -65,6 +40,24 @@ export function generateComponent(oldComponent) {
   return {component};
 }
 
+
+export function generateComponentStack(oldComponent, components) {
+  const componentsArray = [];
+  if (components) {
+    components.forEach((component) => {
+      componentsArray.push(generateComponent(component));
+    });
+  } else {
+    componentsArray.push(generateComponent(oldComponent));
+  }
+
+  return {
+    stack: {
+      children: componentsArray
+    }
+  };
+}
+
 function generateComponentOptions(component) {
   return {
     topBar: {
@@ -79,10 +72,21 @@ function generateComponentOptions(component) {
   };
 }
 
-export function generateComponentStack(oldComponent) {
+function generateDrawer(center, left, right) {
   return {
-    stack: {
-      children: [generateComponent(oldComponent)]
+    sideMenu: {
+      center,
+      left,
+      right
     }
   };
+}
+
+function generateGuid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4();
 }
