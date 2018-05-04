@@ -2,7 +2,7 @@ import {Navigation} from 'react-native-navigation';
 import * as layoutGenerator from './layoutGenerator';
 import * as optionsConverter from './optionsConverter';
 
-function ScreenVisibilityListener({willAppear, didAppear, willDisappear, didDisappear}) {
+function ScreenVisibilityListener({willAppear = () => {}, didAppear = () => {}, willDisappear, didDisappear}) {
   this.register = function () {
     Navigation.events().componentDidAppear((componentId, componentName) => {
       willAppear({screen: componentName});
@@ -12,6 +12,10 @@ function ScreenVisibilityListener({willAppear, didAppear, willDisappear, didDisa
       willDisappear({screen: componentName});
       didDisappear({screen: componentName});
     });
+  };
+
+  this.unregister = function () {
+
   };
 }
 
