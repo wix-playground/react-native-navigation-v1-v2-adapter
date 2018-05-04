@@ -1,4 +1,4 @@
-import { generateNavigator } from "./navigator";
+import {generateNavigator} from './navigator';
 
 export function generateGuid() {
   function s4() {
@@ -16,12 +16,12 @@ function generateDrawer(center, left, right) {
       left,
       right
     }
-  }
+  };
 }
 
 export function generateSingleScreen(screen, drawer) {
   if (drawer) {
-    return generateDrawer(generateSingleScreen(screen), generateComponent(drawer.left), generateComponent(drawer.right));  
+    return generateDrawer(generateSingleScreen(screen), generateComponent(drawer.left), generateComponent(drawer.right));
   }
 
   return generateComponentStack(screen);
@@ -29,7 +29,7 @@ export function generateSingleScreen(screen, drawer) {
 
 export function generateBottomTabs(tabs, drawer) {
   if (drawer) {
-    return generateDrawer(generateBottomTabs(tabs), generateComponent(drawer.left), generateComponent(drawer.right));  
+    return generateDrawer(generateBottomTabs(tabs), generateComponent(drawer.left), generateComponent(drawer.right));
   }
 
   return {
@@ -38,7 +38,7 @@ export function generateBottomTabs(tabs, drawer) {
         return generateComponentStack(tab);
       })
     }
-  }
+  };
 }
 
 export function generateBottomTabsChildren(tabs) {
@@ -60,9 +60,9 @@ export function generateComponent(oldComponent) {
       navigator: generateNavigator(guid, oldComponent)
     },
     options: generateComponentOptions(oldComponent)
-  }
+  };
 
-  return { component };
+  return {component};
 }
 
 function generateComponentOptions(component) {
@@ -76,27 +76,7 @@ function generateComponentOptions(component) {
       title: component.label,
       icon: component.icon
     }
-  }
-}
-
-export function generateDefaultOptions(options) {
-  return {
-    bottomTabs: {
-      // visible: true,
-      // animate: false,
-      // currentTabIndex: 0,
-      // testID: 'bottomTabsTestID',
-      // drawBehind: false,
-      // currentTabId: 'currentTabId',
-      // translucent: true,
-      // hideShadow: false,
-      backgroundColor: options.tabBarBackgroundColor,
-      tabColor: options.tabBarButtonColor,
-      selectedTabColor: options.tabBarSelectedButtonColor,
-      fontFamily: options.tabFontFamily,
-      // fontSize: 10
-    }
-  }
+  };
 }
 
 export function generateComponentStack(oldComponent) {
@@ -104,5 +84,5 @@ export function generateComponentStack(oldComponent) {
     stack: {
       children: [generateComponent(oldComponent)]
     }
-  }
+  };
 }

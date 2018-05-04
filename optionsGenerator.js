@@ -81,5 +81,25 @@ export function generateOptionsFromStyle(style) {
     // overlay: {
     //   interceptTouchOutside: true
     // }
-  }
+  };
+}
+
+export function generateDefaultOptions(options = {}) {
+  return {
+    bottomTabs: {
+      // visible: true,
+      // animate: false,
+      // currentTabIndex: 0,
+      // testID: 'bottomTabsTestID',
+      // drawBehind: false,
+      // currentTabId: 'currentTabId',
+      // translucent: true,
+      // hideShadow: false,
+      backgroundColor: options.tabBarBackgroundColor,
+      tabColor: options.tabBarButtonColor,
+      selectedTabColor: options.tabBarSelectedButtonColor,
+      fontFamily: options.tabFontFamily,
+      // fontSize: 10
+    }
+  };
 }
