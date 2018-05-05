@@ -18,20 +18,6 @@ function ScreenVisibilityListener({willAppear = () => {}, didAppear = () => {}, 
   this.unregister = function () {};
 }
 
-var navigationMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(Navigation));
-
-navigationMethods.forEach(methodName => {
-  if (Navigation[`_${methodName}`]) {
-    return;
-  }
-  const oldPrototype = Navigation[methodName];
-
-  Navigation[methodName] = function () {
-    printFuncExecution(methodName, Array.from(arguments));
-    return oldPrototype.apply(this, arguments);
-  };
-});
-
 Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
 
   Navigation.events().onAppLaunched(() => {
@@ -56,6 +42,20 @@ Navigation.registerComponent = (name, generator, store, provider) => {
 
   Navigation._registerComponent(name, () => component, store, provider);
 };
+
+var navigationMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(Navigation));
+
+navigationMethods.forEach(methodName => {
+  if (Navigation[`_${methodName}`]) {
+    return;
+  }
+  const oldPrototype = Navigation[methodName];
+
+  Navigation[methodName] = function () {
+    printFuncExecution(methodName, Array.from(arguments));
+    return oldPrototype.apply(this, arguments);
+  };
+});
 
 module.exports = {
   Navigation,

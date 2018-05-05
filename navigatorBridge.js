@@ -1,5 +1,5 @@
 import {Navigation} from 'react-native-navigation';
-import * as layoutGenerator from './layoutConverter';
+import * as layoutConverter from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
 import { printFuncExecution } from './utils';
 
@@ -7,7 +7,6 @@ import { printFuncExecution } from './utils';
 export function generateNavigator(guid, component) {
   const navigator = {
     id: guid,
-    setOnNavigatorEvent() {},
     push(params) {
       Navigation.push(this.id, layoutConverter.convertComponent(params));
       printFuncExecution('push', this.id, layoutConverter.convertComponent(params));
@@ -91,6 +90,9 @@ export function generateNavigator(guid, component) {
     setStyle(style) {
       Navigation.mergeOptions(this.id, optionsConverter.convertStyle(style));
     },
+    setOnNavigatorEvent() {
+
+    }
   };
 
   return navigator;

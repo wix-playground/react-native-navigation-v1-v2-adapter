@@ -29,7 +29,7 @@ export function convertStyle(style) {
         // name: style.?
       },
       title: {
-        // text: style.?,
+        text: style.title,
         fontSize: style.navBarTextFontSize,
         color: style.navBarTextColor,
         fontFamily: style.navBarTextFontFamily,
@@ -52,6 +52,14 @@ export function convertStyle(style) {
           // name: style.?
         }
       }
+    },
+    bottomTab: {
+      title: style.label,
+      // badge: style.badge,
+      testID: style.testID,
+      icon: style.icon,
+      selectedIcon: style.selectedIcon,
+      iconInsets: style.iconInsets
     }
     // bottomTabs: {
     //   visible: !style.tabBarHidden,
