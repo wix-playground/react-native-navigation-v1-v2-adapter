@@ -84,7 +84,7 @@ export function convertStyle(style) {
   };
 }
 
-export function generateDefaultOptions(options = {}) {
+export function convertDefaultOptions(options = {}) {
   return {
     bottomTabs: {
       // visible: true,

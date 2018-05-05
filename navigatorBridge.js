@@ -1,13 +1,16 @@
 import {Navigation} from 'react-native-navigation';
-import * as layoutGenerator from './layoutGenerator';
+import * as layoutGenerator from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
+import { printFuncExecution } from './utils';
+
 
 export function generateNavigator(guid, component) {
   const navigator = {
     id: guid,
     setOnNavigatorEvent() {},
     push(params) {
-      Navigation.push(this.id, layoutGenerator.generateComponent(params));
+      Navigation.push(this.id, layoutConverter.convertComponent(params));
+      printFuncExecution('push', this.id, layoutConverter.convertComponent(params));
     },
     pop() {
       Navigation.pop(this.id);
@@ -16,10 +19,10 @@ export function generateNavigator(guid, component) {
       Navigation.popToRoot(this.id);
     },
     resetTo(params) {
-      Navigation.setStackRoot(this.id, layoutGenerator.generateComponent(params));
+      Navigation.setStackRoot(this.id, layoutConverter.convertComponent(params));
     },
     showModal(params) {
-      Navigation.showModal(layoutGenerator.generateComponentStack(params));
+      Navigation.showModal(layoutConverter.convertComponentStack(params));
     },
     setButtons(buttons) {
       Navigation.mergeOptions(this.id, {

@@ -1,28 +1,28 @@
-import {generateNavigator} from './navigator';
+import {generateNavigator} from './navigatorBridge';
 
-export function generateSingleScreen(screen, drawer, components) {
+export function convertSingleScreen(screen, drawer, components) {
   if (drawer) {
-    return generateDrawer(generateSingleScreen(screen), generateComponent(drawer.left), generateComponent(drawer.right));
+    return convertDrawer(convertSingleScreen(screen), convertComponent(drawer.left), convertComponent(drawer.right));
   }
 
-  return generateComponentStack(screen, components);
+  return convertComponentStack(screen, components);
 }
 
-export function generateBottomTabs(tabs, drawer) {
+export function convertBottomTabs(tabs, drawer) {
   if (drawer) {
-    return generateDrawer(generateBottomTabs(tabs), generateComponent(drawer.left), generateComponent(drawer.right));
+    return convertDrawer(convertBottomTabs(tabs), convertComponent(drawer.left), convertComponent(drawer.right));
   }
 
   return {
     bottomTabs: {
       children: tabs.map((tab) => {
-        return generateComponentStack(tab);
+        return convertComponentStack(tab);
       })
     }
   };
 }
 
-export function generateComponent(oldComponent) {
+export function convertComponent(oldComponent) {
   if (!oldComponent) {
     return undefined;
   }
@@ -34,21 +34,21 @@ export function generateComponent(oldComponent) {
     passProps: {
       navigator: generateNavigator(guid, oldComponent)
     },
-    options: generateComponentOptions(oldComponent)
+    options: convertComponentOptions(oldComponent)
   };
 
   return {component};
 }
 
 
-export function generateComponentStack(oldComponent, components) {
+export function convertComponentStack(oldComponent, components) {
   const componentsArray = [];
   if (components) {
     components.forEach((component) => {
-      componentsArray.push(generateComponent(component));
+      componentsArray.push(convertComponent(component));
     });
   } else {
-    componentsArray.push(generateComponent(oldComponent));
+    componentsArray.push(convertComponent(oldComponent));
   }
 
   return {
@@ -58,7 +58,7 @@ export function generateComponentStack(oldComponent, components) {
   };
 }
 
-function generateComponentOptions(component) {
+function convertComponentOptions(component) {
   return {
     topBar: {
       title: {
@@ -72,7 +72,7 @@ function generateComponentOptions(component) {
   };
 }
 
-function generateDrawer(center, left, right) {
+function convertDrawer(center, left, right) {
   return {
     sideMenu: {
       center,

@@ -1,8 +1,9 @@
 import {Navigation} from 'react-native-navigation';
-import * as layoutGenerator from './layoutGenerator';
+import * as layoutGenerator from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
+import {printFuncExecution} from './utils';
 
-function ScreenVisibilityListener({willAppear = () => {}, didAppear = () => {}, willDisappear, didDisappear}) {
+function ScreenVisibilityListener({willAppear = () => {}, didAppear = () => {}, willDisappear = () => {}, didDisappear = () => {}}) {
   this.register = function () {
     Navigation.events().componentDidAppear((componentId, componentName) => {
       willAppear({screen: componentName});
@@ -14,22 +15,35 @@ function ScreenVisibilityListener({willAppear = () => {}, didAppear = () => {}, 
     });
   };
 
-  this.unregister = function () {
-
-  };
+  this.unregister = function () {};
 }
 
+var navigationMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(Navigation));
+
+navigationMethods.forEach(methodName => {
+  if (Navigation[`_${methodName}`]) {
+    return;
+  }
+  const oldPrototype = Navigation[methodName];
+
+  Navigation[methodName] = function () {
+    printFuncExecution(methodName, Array.from(arguments));
+    return oldPrototype.apply(this, arguments);
+  };
+});
+
 Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
+
   Navigation.events().onAppLaunched(() => {
-    Navigation.setDefaultOptions(optionsConverter.generateDefaultOptions(tabsStyle, appStyle));
-    Navigation.setRoot(layoutGenerator.generateBottomTabs(tabs, drawer));
+    Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
+    Navigation.setRoot(layoutGenerator.convertBottomTabs(tabs, drawer));
   });
 };
 
 Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components}) => {
   Navigation.events().onAppLaunched(() => {
-    Navigation.setDefaultOptions(optionsConverter.generateDefaultOptions(tabsStyle, appStyle));
-    Navigation.setRoot(layoutGenerator.generateSingleScreen(screen, drawer, components));
+    Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
+    Navigation.setRoot(layoutGenerator.convertSingleScreen(screen, drawer, components));
   });
 };
 
@@ -42,7 +56,6 @@ Navigation.registerComponent = (name, generator, store, provider) => {
 
   Navigation._registerComponent(name, () => component, store, provider);
 };
-
 
 module.exports = {
   Navigation,
