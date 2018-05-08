@@ -74,11 +74,15 @@ export function generateNavigator(component) {
         }
       });
     },
-    switchToTab(tabIndex = 0) {
+    switchToTab(tabIndex) {
+      const options = tabIndex ? {
+        currentTabIndex: tabIndex
+      } : {
+        currentTabId: this.id
+      };
+
       Navigation.mergeOptions(this.id, {
-        bottomTabs: {
-          currentTabIndex: tabIndex
-        }
+        bottomTabs: options
       });
     },
     toggleNavBar({to, animated}) {
