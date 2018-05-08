@@ -6,14 +6,14 @@ import ScreenVisibilityListener from './ScreenVisibilityListener';
 
 
 Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
-  Navigation.events().onAppLaunched(() => {
+  Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.convertBottomTabs(tabs, drawer));
   });
 };
 
 Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components}) => {
-  Navigation.events().onAppLaunched(() => {
+  Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.convertSingleScreen(screen, drawer, components));
   });
