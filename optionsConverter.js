@@ -8,11 +8,12 @@ export function convertStyle(style) {
     statusBarBlur: style.statusBarBlur,
     statusBarHideWithTopBar: style.statusBarHideWithNavBar,
     statusBarStyle: style.statusBarTextColorSchemeSingleScreen,
-    popGesture: !style.disabledBackGesture,
+    popGesture: style.disabledBackGesture ? !style.disabledBackGesture : undefined,
     backgroundImage: style.screenBackgroundImageName,
     rootBackgroundImage: style.rootBackgroundImageName,
     modalPresentationStyle: style.modalPresentationStyle,
     topBar: {
+      visible: style.navBarHidden ? !style.navBarHidden : undefined,
       hideOnScroll: style.navBarHideOnScroll,
       buttonColor: style.navBarButtonColor,
       translucent: style.navBarTranslucent,
@@ -26,9 +27,7 @@ export function convertStyle(style) {
       // backButtonHidden: style.?,
       // backButtonTitle: style.?,
       // hideBackButtonTitle: style.?,
-      component: {
-        // name: style.?
-      },
+      // component: ,
       title: {
         text: style.title,
         fontSize: style.navBarTextFontSize,
@@ -49,9 +48,9 @@ export function convertStyle(style) {
       },
       background: {
         color: style.navBarBackgroundColor,
-        component: {
-          // name: style.?
-        }
+        // component: {
+        //   // name: style.?
+        // }
       }
     },
     bottomTab: {

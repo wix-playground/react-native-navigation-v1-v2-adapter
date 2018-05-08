@@ -4,25 +4,39 @@ import * as optionsConverter from './optionsConverter';
 import {wrapReduxComponent} from './utils';
 import ScreenVisibilityListener from './ScreenVisibilityListener';
 
+const appLaunched = false;
 
 Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
-  Navigation.events().registerAppLaunchedListener(() => {
+  const onAppLaunched = () => {
+    appLaunched = true;
     Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.convertBottomTabs(tabs, drawer));
-  });
+  }
+  
+  appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
 Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components}) => {
-  Navigation.events().registerAppLaunchedListener(() => {
+  const onAppLaunched = () => {
+    appLaunched = true;
     Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.convertSingleScreen(screen, drawer, components));
-  });
+  }
+
+  appLaunched ? onAppLaunched() :Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
 
 Navigation._registerComponent = Navigation.registerComponent;
 Navigation.registerComponent = (name, generator, store, provider) => {
   const component = store ? wrapReduxComponent(generator, store, provider) : generator();
+  const navigatorStyle = component.navigatorStyle;
+  if (navigatorStyle) {
+    component.__defineGetter__('options', () => {
+      return optionsConverter.convertStyle(navigatorStyle);
+    });
+  }
+
 
   component.prototype.onNavigationButtonPressed = (id) => {
     if (component.prototype.onNavigatorEvent) {
