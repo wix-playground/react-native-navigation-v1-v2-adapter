@@ -1,14 +1,15 @@
 {
-  "name": "react-native-navigation",
+  "name": "react-native-navigation-v1-v2-adapter",
   "version": "1.0.0",
-  "description": "",
+  "description": "React Native Navigation v2 adapter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Yogev Ben David <yogev132@gmail.com>",
+  "license": "MIT",
   "dependencies": {
-    "react-native-navigation": "2.x.x"
+    "react-native-navigation": "2.x.x",
+    "react": "^0.14.5"
   }
 }

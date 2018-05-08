@@ -1,3 +1,4 @@
+import {generateGuid} from './utils';
 
 export function convertStyle(style) {
   return {
@@ -110,4 +111,25 @@ export function convertDefaultOptions(options = {}) {
       // fontSize: 10
     }
   };
+}
+
+export function convertButtons(buttons) {
+  return {
+    leftButtons: buttons.leftButtons ? processButtonsArray(buttons.leftButtons) : [],
+    rightButtons: buttons.rightButtons ? processButtonsArray(buttons.rightButtons) : []
+  };
+}
+
+function processButtonsArray(buttons) {
+  return buttons.map((button) => {
+    if (typeof button.component === 'string') {
+      button.component = {
+        name: button.component,
+        passProps: button.passProps
+      };
+      button.id = button.id ? button.id : generateGuid();
+    }
+
+    return button;
+  });
 }

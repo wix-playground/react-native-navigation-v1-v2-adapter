@@ -1,25 +1,11 @@
 import {Navigation} from 'react-native-navigation';
 import * as layoutGenerator from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
-import {printFuncExecution} from './utils';
+import {wrapReduxComponent} from './utils';
+import ScreenVisibilityListener from './ScreenVisibilityListener';
 
-function ScreenVisibilityListener({willAppear = () => {}, didAppear = () => {}, willDisappear = () => {}, didDisappear = () => {}}) {
-  this.register = function () {
-    Navigation.events().componentDidAppear((componentId, componentName) => {
-      willAppear({screen: componentName});
-      didAppear({screen: componentName});
-    });
-    Navigation.events().componentDidDisappear((componentId, componentName) => {
-      willDisappear({screen: componentName});
-      didDisappear({screen: componentName});
-    });
-  };
-
-  this.unregister = function () {};
-}
 
 Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
-
   Navigation.events().onAppLaunched(() => {
     Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.convertBottomTabs(tabs, drawer));
@@ -33,29 +19,38 @@ Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, compone
   });
 };
 
+
 Navigation._registerComponent = Navigation.registerComponent;
 Navigation.registerComponent = (name, generator, store, provider) => {
-  const component = generator();
+  const component = store ? wrapReduxComponent(generator, store, provider) : generator();
+
   component.prototype.onNavigationButtonPressed = (id) => {
-    component.prototype.onNavigatorEvent({id});
+    if (component.prototype.onNavigatorEvent) {
+      component.prototype.onNavigatorEvent({id});
+    }
+  };
+  component.prototype.componentDidAppear = () => {
+    if (this.props) {
+      this.props.navigator.isVisible = true;
+    }
+    if (component.prototype.onNavigatorEvent) {
+      component.prototype.onNavigatorEvent({id: 'willAppear'});
+      component.prototype.onNavigatorEvent({id: 'didAppear'});
+    }
+  };
+  component.prototype.componentDidDisappear = () => {
+    if (this.props) {
+      this.props.navigator.isVisible = false;
+    }
+    if (component.prototype.onNavigatorEvent) {
+      component.prototype.onNavigatorEvent({id: 'willDisappear'});
+      component.prototype.onNavigatorEvent({id: 'didDisappear'});
+    }
   };
 
   Navigation._registerComponent(name, () => component, store, provider);
 };
 
-var navigationMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(Navigation));
-
-navigationMethods.forEach(methodName => {
-  if (Navigation[`_${methodName}`]) {
-    return;
-  }
-  const oldPrototype = Navigation[methodName];
-
-  Navigation[methodName] = function () {
-    printFuncExecution(methodName, Array.from(arguments));
-    return oldPrototype.apply(this, arguments);
-  };
-});
 
 module.exports = {
   Navigation,

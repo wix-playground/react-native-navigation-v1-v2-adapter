@@ -1,5 +1,6 @@
 import {generateNavigator} from './navigatorBridge';
 import * as optionsConverter from './optionsConverter';
+
 export function convertSingleScreen(screen, drawer, components) {
   if (drawer) {
     return convertDrawer(convertSingleScreen(screen), convertComponent(drawer.left), convertComponent(drawer.right));
@@ -29,12 +30,14 @@ export function convertComponent(oldComponent) {
 
   oldComponent = Object.assign(oldComponent, oldComponent.navigatorStyle);
 
-  const guid = generateGuid();
+  const navigator = generateNavigator(oldComponent);
   const component = {
-    id: guid,
+    id: navigator.id,
     name: oldComponent.screen,
     passProps: {
-      navigator: generateNavigator(guid, oldComponent)
+      navigator,
+      ...oldComponent,
+      ...oldComponent.passProps
     },
     options: optionsConverter.convertStyle(oldComponent)
   };
@@ -68,13 +71,4 @@ function convertDrawer(center, left, right) {
       right
     }
   };
-}
-
-function generateGuid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4();
 }
