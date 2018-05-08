@@ -10,6 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "react-native-navigation": "2.x.x",
-    "react": "^0.14.5"
+    "react": "16.0.0"
   }
 }
