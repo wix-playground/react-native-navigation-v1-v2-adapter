@@ -100,29 +100,29 @@ npm install --save react-native-navigation-v1-v2-adapter@alpha
 		compileSdkVersion 25
 	-        buildToolsVersion '26.0.2'
 	+        buildToolsVersion '27.0.3'
-             
-        ...
-+   compileOptions {
-+       sourceCompatibility JavaVersion.VERSION_1_8
-+       targetCompatibility JavaVersion.VERSION_1_8
-+   }
-   }
-   
- dependencies {
-		 // Change all `compile` statements to `implementation`
--    compile fileTree(dir: 'libs', include: ['*.jar'])
--    compile 'com.facebook.react:react-native:+'
--    compile project(':react-native-navigation')
-+    implementation fileTree(dir: 'libs', include: ['*.jar'])
-+    implementation 'com.facebook.react:react-native:+'
-+    implementation project(':react-native-navigation')
- }
+
+	...
+	+   compileOptions {
+	+       sourceCompatibility JavaVersion.VERSION_1_8
+	+       targetCompatibility JavaVersion.VERSION_1_8
+	+   }
+	}
+
+	dependencies {
+	//   Change all `compile` statements to `implementation`
+	-    compile fileTree(dir: 'libs', include: ['*.jar'])
+	-    compile 'com.facebook.react:react-native:+'
+	-    compile project(':react-native-navigation')
+	+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+	+    implementation 'com.facebook.react:react-native:+'
+	+    implementation project(':react-native-navigation')
+	 }
 ```
 
 4. Update `setting.gradle`
 
 	```diff
-	 include ':app'
+	include ':app'
 	-project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
 	+project(':react-native-navigation2').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 	```
