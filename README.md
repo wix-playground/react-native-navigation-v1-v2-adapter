@@ -127,7 +127,7 @@ npm install --save react-native-navigation-v1-v2-adapter@alpha
 	+project(':react-native-navigation2').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 	```
 	
-5. Edit `MainApplication.java` - Only if you're using a single index file
+5. Edit `MainApplication.java` - Only if your app has a single index file
 
 	```diff
 	public class MainApplication extends NavigationApplication {
