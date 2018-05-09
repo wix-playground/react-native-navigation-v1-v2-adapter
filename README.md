@@ -97,9 +97,9 @@ npm install --save react-native-navigation-v1-v2-adapter@alpha
 
 	```diff
 	android {
-        compileSdkVersion 25
--   buildToolsVersion '26.0.2'
-+   buildToolsVersion '27.0.3'
+		compileSdkVersion 25
+	-        buildToolsVersion '26.0.2'
+	+        buildToolsVersion '27.0.3'
              
         ...
 +   compileOptions {
