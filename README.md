@@ -16,7 +16,7 @@ React Native Navigation v1 to v2 adapter
 
 1. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking)).
    
-   (it may install RNN v2 inside react-native-navigation-v1-v2-adapter, in such case the path will be: `node_modules/react-native-navigation-v1-v2-adapter/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj`
+   (it may install RNN v2 inside react-native-navigation-v1-v2-adapter, in such case the path will be: `node_modules/react-native-navigation-v1-v2-adapter/node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj`
 2. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *target* row (on the "project and targets list", which is on the left column of the right pane) and select the `Build Phases` tab (right pane). In the `Link Binary With Libraries` section add `libReactNativeNavigation.a` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-2)).
 
 3. In Xcode, you will need to edit this file: `AppDelegate.m`. This function is the main entry point for your app:
