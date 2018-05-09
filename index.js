@@ -1,73 +1,86 @@
-import {Navigation} from 'react-native-navigation';
+import * as React from 'react';
+import { Navigation } from 'react-native-navigation';
 import * as layoutGenerator from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
-import {wrapReduxComponent} from './utils';
+import { wrapReduxComponent } from './utils';
 import ScreenVisibilityListener from './ScreenVisibilityListener';
 
 const appLaunched = false;
+const originalRegisterComponent = Navigation.registerComponent.bind(Navigation);
 
-Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
+Navigation.startTabBasedApp = ({ tabs, tabsStyle, appStyle, drawer }) => {
   const onAppLaunched = () => {
     appLaunched = true;
     Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.convertBottomTabs(tabs, drawer));
   }
-  
+
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
-Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components}) => {
+Navigation.startSingleScreenApp = ({ screen, tabsStyle, appStyle, drawer, components }) => {
   const onAppLaunched = () => {
     appLaunched = true;
     Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
     Navigation.setRoot(layoutGenerator.convertSingleScreen(screen, drawer, components));
   }
 
-  appLaunched ? onAppLaunched() :Navigation.events().registerAppLaunchedListener(onAppLaunched);
+  appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
 
-Navigation._registerComponent = Navigation.registerComponent;
 Navigation.registerComponent = (name, generator, store, provider) => {
-  const component = store ? wrapReduxComponent(generator, store, provider) : generator();
-  const navigatorStyle = component.navigatorStyle;
-  const navigatorButtons = component.navigatorButtons;
+  const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
 
-  if (navigatorStyle || navigatorButtons) {
-    component.__defineGetter__('options', () => {
-      const s = optionsConverter.convertStyle(navigatorStyle, navigatorButtons);
-      return s;
-    });
+  const Wrapped = class extends React.Component {
+    static get options() {
+      const navigatorStyle = Component.navigatorStyle;
+      const navigatorButtons = Component.navigatorButtons;
+      if (navigatorStyle || navigatorButtons) {
+        return optionsConverter.convertStyle(navigatorStyle, navigatorButtons);
+      } else {
+        return undefined;
+      }
+    }
+
+    componentWillUnmount() {
+      this.originalRef = undefined;
+    }
+
+    componentDidAppear() {
+      if (this.originalRef.props) {
+        this.originalRef.props.navigator.isVisible = true;
+      }
+      if (this.originalRef.onNavigatorEvent) {
+        this.originalRef.onNavigatorEvent({ id: 'willAppear' });
+        this.originalRef.onNavigatorEvent({ id: 'didAppear' });
+      }
+    }
+
+    componentDidDisappear() {
+      if (this.originalRef.props) {
+        this.originalRef.props.navigator.isVisible = false;
+      }
+      if (this.originalRef.onNavigatorEvent) {
+        this.originalRef.onNavigatorEvent({ id: 'willDisappear' });
+        this.originalRef.onNavigatorEvent({ id: 'didDisappear' });
+      }
+    }
+
+    onNavigationButtonPressed(id) {
+      if (this.originalRef.onNavigatorEvent) {
+        this.originalRef.onNavigatorEvent({ id });
+      }
+    }
+
+    render() {
+      return (
+        <Component ref={(r) => this.originalRef = r} />
+      );
+    }
   }
 
-
-  component.prototype.onNavigationButtonPressed = function(id) {
-    if (this.onNavigatorEvent) {
-      this.onNavigatorEvent({id});
-    }
-  };
-  
-  component.prototype.componentDidAppear = function () {
-    if (this.props) {
-      this.props.navigator.isVisible = true;
-    }
-    if (this.onNavigatorEvent) {
-      this.onNavigatorEvent({id: 'willAppear'});
-      this.onNavigatorEvent({id: 'didAppear'});
-    }
-  };
-
-  component.prototype.componentDidDisappear = () => {
-    if (this.props) {
-      this.props.navigator.isVisible = false;
-    }
-    if (this.onNavigatorEvent) {
-      this.onNavigatorEvent({id: 'willDisappear'});
-      this.onNavigatorEvent({id: 'didDisappear'});
-    }
-  };
-
-  Navigation._registerComponent(name, () => component, store, provider);
+  originalRegisterComponent(name, () => Wrapped);
 };
 
 
