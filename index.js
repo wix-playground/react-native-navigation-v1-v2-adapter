@@ -31,34 +31,39 @@ Navigation._registerComponent = Navigation.registerComponent;
 Navigation.registerComponent = (name, generator, store, provider) => {
   const component = store ? wrapReduxComponent(generator, store, provider) : generator();
   const navigatorStyle = component.navigatorStyle;
-  if (navigatorStyle) {
+  const navigatorButtons = component.navigatorButtons;
+
+  if (navigatorStyle || navigatorButtons) {
     component.__defineGetter__('options', () => {
-      return optionsConverter.convertStyle(navigatorStyle);
+      const s = optionsConverter.convertStyle(navigatorStyle, navigatorButtons);
+      return s;
     });
   }
 
 
-  component.prototype.onNavigationButtonPressed = (id) => {
-    if (component.prototype.onNavigatorEvent) {
-      component.prototype.onNavigatorEvent({id});
+  component.prototype.onNavigationButtonPressed = function(id) {
+    if (this.onNavigatorEvent) {
+      this.onNavigatorEvent({id});
     }
   };
-  component.prototype.componentDidAppear = () => {
+  
+  component.prototype.componentDidAppear = function () {
     if (this.props) {
       this.props.navigator.isVisible = true;
     }
-    if (component.prototype.onNavigatorEvent) {
-      component.prototype.onNavigatorEvent({id: 'willAppear'});
-      component.prototype.onNavigatorEvent({id: 'didAppear'});
+    if (this.onNavigatorEvent) {
+      this.onNavigatorEvent({id: 'willAppear'});
+      this.onNavigatorEvent({id: 'didAppear'});
     }
   };
+
   component.prototype.componentDidDisappear = () => {
     if (this.props) {
       this.props.navigator.isVisible = false;
     }
-    if (component.prototype.onNavigatorEvent) {
-      component.prototype.onNavigatorEvent({id: 'willDisappear'});
-      component.prototype.onNavigatorEvent({id: 'didDisappear'});
+    if (this.onNavigatorEvent) {
+      this.onNavigatorEvent({id: 'willDisappear'});
+      this.onNavigatorEvent({id: 'didDisappear'});
     }
   };
 
