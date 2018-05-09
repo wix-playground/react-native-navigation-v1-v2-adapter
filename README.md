@@ -9,7 +9,10 @@ React Native Navigation v1 to v2 adapter
 * react-native >= 0.51
 
 ## npm
-* `npm install --save react-native-navigation-v1-v2-adapter@alpha`
+```
+npm uninstall react-native-navigation
+npm install --save react-native-navigation-v1-v2-adapter@alpha
+```
 
 ## iOS
 
