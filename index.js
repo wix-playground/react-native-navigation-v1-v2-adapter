@@ -51,9 +51,9 @@ Navigation.registerComponent = (name, generator, store, provider) => {
       if (this.originalRef && this.originalRef.props) {
         this.originalRef.props.navigator.isVisible = true;
       }
-      if (this.originalRef && this.originalRef.onNavigatorEvent) {
-        this.originalRef.onNavigatorEvent({ id: 'willAppear' });
-        this.originalRef.onNavigatorEvent({ id: 'didAppear' });
+      if (this._isRegisteredToNavigatorEvents()) {
+        this.originalRef.props.navigator.eventFunc({ id: 'willAppear' });
+        this.originalRef.props.navigator.eventFunc({ id: 'didAppear' });
       }
     }
 
@@ -61,16 +61,21 @@ Navigation.registerComponent = (name, generator, store, provider) => {
       if (this.originalRef && this.originalRef.props) {
         this.originalRef.props.navigator.isVisible = false;
       }
-      if (this.originalRef && this.originalRef.onNavigatorEvent) {
-        this.originalRef.onNavigatorEvent({ id: 'willDisappear' });
-        this.originalRef.onNavigatorEvent({ id: 'didDisappear' });
+
+      if (this._isRegisteredToNavigatorEvents()) {
+        this.originalRef.props.navigator.eventFunc({ id: 'willDisappear' });
+        this.originalRef.props.navigator.eventFunc({ id: 'didDisappear' });
       }
     }
 
     onNavigationButtonPressed(id) {
-      if (this.originalRef && this.originalRef.onNavigatorEvent) {
-        this.originalRef.onNavigatorEvent({ id });
+      if (this._isRegisteredToNavigatorEvents()) {
+        this.originalRef.props.navigator.eventFunc({ id });
       }
+    }
+
+    _isRegisteredToNavigatorEvents() {
+      return this.originalRef && this.originalRef.props && this.originalRef.props.navigator.eventFunc;
     }
 
     render() {

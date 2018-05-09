@@ -7,6 +7,7 @@ export function generateNavigator(component) {
   const navigator = {
     id: generateGuid(),
     isVisible: false,
+    eventFunc: undefined,
     push(params) {
       Navigation.push(this.id, layoutConverter.convertComponent(params));
     },
@@ -99,11 +100,11 @@ export function generateNavigator(component) {
     screenIsCurrentlyVisible() {
       return this.isVisible;
     },
-    addOnNavigatorEvent() {
-
+    addOnNavigatorEvent(func) {
+      this.eventFunc = func;
     },
-    setOnNavigatorEvent() {
-
+    setOnNavigatorEvent(func) {
+      this.eventFunc = func;
     }
   };
 
