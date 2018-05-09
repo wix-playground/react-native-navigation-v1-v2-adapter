@@ -48,34 +48,34 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
 
     componentDidAppear() {
-      if (this.originalRef.props) {
+      if (this.originalRef && this.originalRef.props) {
         this.originalRef.props.navigator.isVisible = true;
       }
-      if (this.originalRef.onNavigatorEvent) {
+      if (this.originalRef && this.originalRef.onNavigatorEvent) {
         this.originalRef.onNavigatorEvent({ id: 'willAppear' });
         this.originalRef.onNavigatorEvent({ id: 'didAppear' });
       }
     }
 
     componentDidDisappear() {
-      if (this.originalRef.props) {
+      if (this.originalRef && this.originalRef.props) {
         this.originalRef.props.navigator.isVisible = false;
       }
-      if (this.originalRef.onNavigatorEvent) {
+      if (this.originalRef && this.originalRef.onNavigatorEvent) {
         this.originalRef.onNavigatorEvent({ id: 'willDisappear' });
         this.originalRef.onNavigatorEvent({ id: 'didDisappear' });
       }
     }
 
     onNavigationButtonPressed(id) {
-      if (this.originalRef.onNavigatorEvent) {
+      if (this.originalRef && this.originalRef.onNavigatorEvent) {
         this.originalRef.onNavigatorEvent({ id });
       }
     }
 
     render() {
       return (
-        <Component ref={(r) => this.originalRef = r} />
+        <Component ref={(r) => this.originalRef = r} {...this.props} />
       );
     }
   }
