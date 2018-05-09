@@ -117,7 +117,7 @@ npm install --save react-native-navigation-v1-v2-adapter@alpha
 	+    implementation 'com.facebook.react:react-native:+'
 	+    implementation project(':react-native-navigation')
 	 }
-```
+	```
 
 4. Update `setting.gradle`
 
