@@ -9,7 +9,7 @@ export function generateNavigator(component) {
     isVisible: false,
     eventFunc: undefined,
     push(params) {
-      setPropsCommandType(params.passProps, "Push");
+      setPropsCommandType(params, "Push");
       Navigation.push(this.id, layoutConverter.convertComponent(params));
     },
     pop() {
@@ -22,7 +22,7 @@ export function generateNavigator(component) {
       Navigation.setStackRoot(this.id, layoutConverter.convertComponent(params));
     },
     showModal(params) {
-      setPropsCommandType(params.passProps, "ShowModal");
+      setPropsCommandType(params, "ShowModal");
       Navigation.showModal(layoutConverter.convertComponentStack(params));
     },
     dismissModal() {
@@ -113,8 +113,8 @@ export function generateNavigator(component) {
   return navigator;
 }
 
-function setPropsCommandType(props, commandType) {
-  if (props) {
-    props.commandType = commandType;
+function setPropsCommandType(params, commandType) {
+  if (params && params.props) {
+    params.props.commandType = commandType;
   }
 }
