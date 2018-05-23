@@ -22,7 +22,6 @@ export function convertStyle(style) {
       noBorder: style.navBarNoBorder,
       blur: style.navBarBlur,
       largeTitle: style.largeTitle,
-      testID: style.testID,
       // backButtonImage: style.?,
       // backButtonHidden: style.?,
       // backButtonTitle: style.?,
