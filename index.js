@@ -30,10 +30,9 @@ Navigation.startSingleScreenApp = ({ screen, tabsStyle, appStyle, drawer, compon
 
 
 Navigation.registerComponent = (name, generator, store, provider) => {
-  const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
-
   const Wrapped = class extends React.Component {
     static get options() {
+      const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
       const navigatorStyle = Component.navigatorStyle;
       const navigatorButtons = Component.navigatorButtons;
       if (navigatorStyle || navigatorButtons) {
@@ -79,6 +78,7 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
 
     render() {
+      const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
       return (
         <Component ref={(r) => this.originalRef = r} {...this.props} />
       );
