@@ -1,6 +1,6 @@
 import {generateGuid} from './utils';
 
-export function convertStyle(style) {
+export function convertStyle(style = {}) {
   return {
     statusBarHidden: style.statusBarHidden,
     screenBackgroundColor: style.screenBackgroundColor,
