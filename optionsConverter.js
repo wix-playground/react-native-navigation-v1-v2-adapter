@@ -1,6 +1,6 @@
 import {generateGuid} from './utils';
 
-export function convertStyle(style = {}) {
+export function convertStyle(style = {}, buttons = {}) {
   return {
     statusBarHidden: style.statusBarHidden,
     screenBackgroundColor: style.screenBackgroundColor,
@@ -27,6 +27,7 @@ export function convertStyle(style = {}) {
       // backButtonTitle: style.?,
       // hideBackButtonTitle: style.?,
       // component: ,
+      ...buttons,
       title: {
         text: style.title,
         fontSize: style.navBarTextFontSize,
