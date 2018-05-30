@@ -8,6 +8,10 @@ import ScreenVisibilityListener from './ScreenVisibilityListener';
 const appLaunched = false;
 const originalRegisterComponent = Navigation.registerComponent.bind(Navigation);
 
+Navigation.events().registerAppLaunchedListener(() => {
+  appLaunched = true;
+});
+
 Navigation.startTabBasedApp = ({ tabs, tabsStyle, appStyle, drawer }) => {
   const onAppLaunched = () => {
     appLaunched = true;
