@@ -14,9 +14,28 @@ npm uninstall react-native-navigation
 npm install --save react-native-navigation-v1-v2-adapter@alpha
 ```
 
+## JS
+The adapter does its magic by swizzling a few method and adding another set of methods to the `Navigation` object. Therefor you need to ensure you're using the modified `Navigation` object. To do so, you have two options:
+	
+1. *The easy way*. Execute the adapter's static code first when your Js code starts running. Simply import `Navigation` from the adapter at the top of your `index.js` file.
+
+	```js
+	import {Navigation, ScreenVisibilityListener} from 'react-native-navigation-v1-v2-adapter';
+	```
+	
+2. *The hard way*. and replace all import statements:
+
+	```js
+	import {Navigation, ScreenVisibilityListener} from 'react-native-navigation';
+	```
+   
+	With:
+
+	```js
+	import {Navigation, ScreenVisibilityListener} from 'react-native-navigation-v1-v2-adapter';
+	```
+
 ## iOS
-
-
 1. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking)).
    
    (it may install RNN v2 inside react-native-navigation-v1-v2-adapter, in such case the path will be: `node_modules/react-native-navigation-v1-v2-adapter/node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj`
@@ -49,18 +68,6 @@ npm install --save react-native-navigation-v1-v2-adapter@alpha
 	}
 
 	@end
-	```
-  
-4. Replace all navigation imports:
-
-	```js
-	import {Navigation, ScreenVisibilityListener} from 'react-native-navigation';
-	```
-   
-	With:
-
-	```js
-	import {Navigation, ScreenVisibilityListener} from 'react-native-navigation-v1-v2-adapter';
 	```
 
 ## Android
