@@ -1,12 +1,15 @@
 import * as React from 'react';
-import {Navigation} from 'react-native-navigation';
+import * as navigationModule from 'react-native-navigation';
 import * as layoutGenerator from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
 import {wrapReduxComponent} from './utils';
 import ScreenVisibilityListener from './ScreenVisibilityListener';
 
+navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
+const Navigation = navigationModule.Navigation;
 const appLaunched = false;
 const originalRegisterComponent = Navigation.registerComponent.bind(Navigation);
+
 
 Navigation.events().registerAppLaunchedListener(() => {
   appLaunched = true;
