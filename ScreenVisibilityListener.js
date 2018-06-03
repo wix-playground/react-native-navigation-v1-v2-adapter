@@ -12,5 +12,8 @@ export default function ScreenVisibilityListener({willAppear = () => {}, didAppe
     });
   };
 
-  this.unregister = function () {};
+  this.unregister = function () {
+    Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {});
+    Navigation.events().registerComponentDidDisappearListener((componentId, componentName) => {});
+  };
 }
