@@ -23,7 +23,7 @@ The adapter does its magic by swizzling a few method and adding another set of m
 	import {Navigation, ScreenVisibilityListener} from 'react-native-navigation-v1-v2-adapter';
 	```
 	
-2. *The hard way*. and replace all import statements:
+2. *The hard way*. Replace all import statements across your codebase:
 
 	```js
 	import {Navigation, ScreenVisibilityListener} from 'react-native-navigation';
