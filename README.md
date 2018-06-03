@@ -15,7 +15,7 @@ npm install --save react-native-navigation-v1-v2-adapter
 ```
 
 ## JS
-The adapter does its magic by swizzling a few method and adding another set of methods to the `Navigation` object. Therefor you need to ensure you're using the modified `Navigation` object. To do so, you have two options:
+The adapter does its magic by swizzling a few method and adding another set of methods to the `Navigation` object. Therefor you need to ensure you're using the modified `Navigation` object and to do so, you have two options:
 	
 1. *The easy way*. Execute the adapter's static code first when your Js code starts running. Simply import `Navigation` from the adapter at the top of your `index.js` file.
 
