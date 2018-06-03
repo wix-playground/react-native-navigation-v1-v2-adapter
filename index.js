@@ -18,7 +18,7 @@ Navigation.events().registerAppLaunchedListener(() => {
 Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
   const onAppLaunched = () => {
     appLaunched = true;
-    Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
+    Navigation.setDefaultOptions(optionsConverter.convertStyle({...tabsStyle, ...appStyle}));
     Navigation.setRoot({root: layoutGenerator.convertBottomTabs(tabs, drawer)});
   }
 
@@ -28,7 +28,7 @@ Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
 Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components}) => {
   const onAppLaunched = () => {
     appLaunched = true;
-    Navigation.setDefaultOptions(optionsConverter.convertDefaultOptions(tabsStyle, appStyle));
+    Navigation.setDefaultOptions(optionsConverter.convertStyle({...tabsStyle, ...appStyle}));
     Navigation.setRoot({root: layoutGenerator.convertSingleScreen(screen, drawer, components)});
   }
 

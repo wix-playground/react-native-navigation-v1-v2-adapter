@@ -92,26 +92,6 @@ export function convertStyle(style = {}, buttons = {}) {
   };
 }
 
-export function convertDefaultOptions(options = {}) {
-  return {
-    bottomTabs: {
-      // visible: true,
-      // animate: false,
-      // currentTabIndex: 0,
-      // testID: 'bottomTabsTestID',
-      // drawBehind: false,
-      // currentTabId: 'currentTabId',
-      // translucent: true,
-      // hideShadow: false,
-      backgroundColor: options.tabBarBackgroundColor,
-      tabColor: options.tabBarButtonColor,
-      selectedTabColor: options.tabBarSelectedButtonColor,
-      fontFamily: options.tabFontFamily,
-      // fontSize: 10
-    }
-  };
-}
-
 export function convertButtons(buttons) {
   return {
     leftButtons: buttons.leftButtons ? processButtonsArray(buttons.leftButtons) : [],
