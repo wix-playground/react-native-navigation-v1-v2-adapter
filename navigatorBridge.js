@@ -3,6 +3,12 @@ import * as layoutConverter from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
 import {generateGuid} from './utils';
 
+
+const originalShowModal = Navigation.showModal.bind(Navigation);
+Navigation.showModal = (params) => {
+  originalShowModal(layoutConverter.convertComponentStack(params));
+};
+
 export function generateNavigator(component) {
   const navigator = {
     id: generateGuid(),
@@ -23,7 +29,7 @@ export function generateNavigator(component) {
     },
     showModal(params) {
       setPropsCommandType(params, "ShowModal");
-      Navigation.showModal(layoutConverter.convertComponentStack(params));
+      originalShowModal(layoutConverter.convertComponentStack(params));
     },
     dismissModal() {
       Navigation.dismissModal(this.id);
