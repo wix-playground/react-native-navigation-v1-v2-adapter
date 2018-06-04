@@ -9,7 +9,7 @@ navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
 const Navigation = navigationModule.Navigation;
 const appLaunched = false;
 const originalRegisterComponent = Navigation.registerComponent.bind(Navigation);
-
+const originalShowModal = Navigation.showModal.bind(Navigation);
 
 Navigation.events().registerAppLaunchedListener(() => {
   appLaunched = true;
@@ -33,6 +33,10 @@ Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, compone
   }
 
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
+};
+
+Navigation.showModal = (params) => {
+  Navigation.originalShowModal(layoutConverter.convertComponentStack(params));
 };
 
 
