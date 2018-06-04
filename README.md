@@ -155,4 +155,14 @@ The adapter does its magic by swizzling a few method and adding another set of m
    +        };
    +    }
 	}
-	```	
+	```
+	
+6. Edit `MainActivity.java`
+
+	```diff
+   +    public class MainActivity extends NavigationActivity {
+   -    public class MainActivity extends SplashActivity {
+   
+	}
+
+	```
