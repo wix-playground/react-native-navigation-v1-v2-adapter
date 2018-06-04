@@ -36,7 +36,7 @@ Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, compone
 };
 
 Navigation.showModal = (params) => {
-  Navigation.originalShowModal(layoutConverter.convertComponentStack(params));
+  originalShowModal(layoutGenerator.convertComponentStack(params));
 };
 
 
