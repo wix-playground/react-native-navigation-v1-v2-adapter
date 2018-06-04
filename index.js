@@ -24,10 +24,11 @@ Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
-Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components}) => {
+Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components, passProps}) => {
   const onAppLaunched = () => {
     appLaunched = true;
     Navigation.setDefaultOptions(optionsConverter.convertStyle({...tabsStyle, ...appStyle}));
+    screen.passProps = passProps;
     Navigation.setRoot({root: layoutGenerator.convertSingleScreen(screen, drawer, components)});
   }
 
