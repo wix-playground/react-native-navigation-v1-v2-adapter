@@ -79,7 +79,7 @@ export function generateNavigator(component) {
     setTabBadge({badge}) {
       Navigation.mergeOptions(this.id, {
         bottomTab: {
-          badge: badge.toString()
+          badge
         }
       });
     },
@@ -87,8 +87,8 @@ export function generateNavigator(component) {
       const options = tabIndex ? {
         currentTabIndex: tabIndex
       } : {
-        currentTabId: this.id
-      };
+          currentTabId: this.id
+        };
 
       Navigation.mergeOptions(this.id, {
         bottomTabs: options
