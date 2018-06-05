@@ -121,6 +121,8 @@ export function generateNavigator(component) {
 
 function setPropsCommandType(params, commandType) {
   if (params && params.props) {
-    params.props.commandType = commandType;
+    params.passProps.commandType = commandType;
+  } else {
+    params.passProps = {commandType}
   }
 }
