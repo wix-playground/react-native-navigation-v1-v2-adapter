@@ -35,11 +35,13 @@ export function generateNavigator(component) {
       Navigation.dismissModal(this.id);
     },
     setButtons(buttons) {
-      Navigation.mergeOptions(this.id, {
-        topBar: {
-          ...optionsConverter.convertButtons(buttons)
-        }
-      });
+      if (buttons.rightButtons || buttons.leftButtons) {
+        Navigation.mergeOptions(this.id, {
+          topBar: {
+            ...optionsConverter.convertButtons(buttons)
+          }
+        });
+      }
     },
     setTitle({title}) {
       Navigation.mergeOptions(this.id, {
@@ -120,7 +122,7 @@ export function generateNavigator(component) {
 }
 
 function setPropsCommandType(params, commandType) {
-  if (params && params.props) {
+  if (params && params.passProps) {
     params.passProps.commandType = commandType;
   } else {
     params.passProps = {commandType}

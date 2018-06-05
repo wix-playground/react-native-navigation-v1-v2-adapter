@@ -59,7 +59,7 @@ export function convertComponentStack(oldComponent, components) {
   return {
     stack: {
       children: componentsArray,
-      options: optionsConverter.convertStyle(oldComponent)
+      // options: optionsConverter.convertStyle(oldComponent)
     }
   };
 }

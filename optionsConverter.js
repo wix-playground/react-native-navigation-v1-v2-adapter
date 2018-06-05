@@ -1,13 +1,18 @@
 import {generateGuid} from './utils';
 
 export function convertStyle(style = {}, buttons = {}) {
+    if (style.navigatorButtons) {
+      buttons = convertButtons(style.navigatorButtons);
+    }
   return {
-    statusBarHidden: style.statusBarHidden,
     screenBackgroundColor: style.screenBackgroundColor,
     orientation: style.orientation,
-    statusBarBlur: style.statusBarBlur,
-    statusBarHideWithTopBar: style.statusBarHideWithNavBar,
-    statusBarStyle: style.statusBarTextColorSchemeSingleScreen,
+    statusBar: {
+      blur: style.statusBarBlur,
+      hideWithTopBar: style.statusBarHideWithNavBar,
+      style: style.statusBarTextColorScheme,
+      hidden: style.statusBarHidden
+    },
     popGesture: style.disabledBackGesture ? !style.disabledBackGesture : undefined,
     backgroundImage: style.screenBackgroundImageName,
     rootBackgroundImage: style.rootBackgroundImageName,
@@ -40,7 +45,7 @@ export function convertStyle(style = {}, buttons = {}) {
         }
       },
       subtitle: {
-        // text: style.?,
+        text: style.subtitle,
         fontSize: style.navBarSubtitleFontSize,
         color: style.navBarSubtitleColor,
         fontFamily: style.navBarSubtitleFontFamily,
@@ -108,6 +113,7 @@ function processButtonsArray(buttons) {
       };
       button.id = button.id ? button.id : generateGuid();
     }
+    button.enabled = !button.disabled;
 
     return button;
   });
