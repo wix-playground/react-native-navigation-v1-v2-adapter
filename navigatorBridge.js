@@ -3,10 +3,13 @@ import * as layoutConverter from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
 import {generateGuid} from './utils';
 
-
+const modalsPresented = [];
 const originalShowModal = Navigation.showModal.bind(Navigation);
 Navigation.showModal = (params) => {
-  originalShowModal(layoutConverter.convertComponentStack(params));
+  setPropsCommandType(params, "ShowModal");
+  const layout = layoutConverter.convertComponentStack(params);
+  originalShowModal(layout);
+  modalsPresented.push(layout.stack.children[0].component.id);
 };
 
 export function generateNavigator(component) {
@@ -28,11 +31,13 @@ export function generateNavigator(component) {
       Navigation.setStackRoot(this.id, layoutConverter.convertComponent(params));
     },
     showModal(params) {
-      setPropsCommandType(params, "ShowModal");
-      originalShowModal(layoutConverter.convertComponentStack(params));
+      Navigation.showModal(params);
     },
     dismissModal() {
-      Navigation.dismissModal(this.id);
+      const topModalComponentId = modalsPresented.pop();
+      if (topModalComponentId) {
+        Navigation.dismissModal(topModalComponentId);
+      }
     },
     setButtons(buttons) {
       if (buttons.rightButtons || buttons.leftButtons) {
