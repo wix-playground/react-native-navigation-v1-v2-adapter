@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as navigationModule from 'react-native-navigation';
 import * as layoutGenerator from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
-import {wrapReduxComponent} from './utils';
+import { wrapReduxComponent } from './utils';
 import ScreenVisibilityListener from './ScreenVisibilityListener';
 
 navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
@@ -14,22 +14,22 @@ Navigation.events().registerAppLaunchedListener(() => {
   appLaunched = true;
 });
 
-Navigation.startTabBasedApp = ({tabs, tabsStyle, appStyle, drawer}) => {
+Navigation.startTabBasedApp = ({ tabs, tabsStyle, appStyle, drawer }) => {
   const onAppLaunched = () => {
     appLaunched = true;
-    Navigation.setDefaultOptions(optionsConverter.convertStyle({...tabsStyle, ...appStyle}));
-    Navigation.setRoot({root: layoutGenerator.convertBottomTabs(tabs, drawer)});
+    Navigation.setDefaultOptions(optionsConverter.convertStyle({ ...tabsStyle, ...appStyle }));
+    Navigation.setRoot({ root: layoutGenerator.convertBottomTabs(tabs, drawer) });
   }
 
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
-Navigation.startSingleScreenApp = ({screen, tabsStyle, appStyle, drawer, components, passProps}) => {
+Navigation.startSingleScreenApp = ({ screen, tabsStyle, appStyle, drawer, components, passProps }) => {
   const onAppLaunched = () => {
     appLaunched = true;
-    Navigation.setDefaultOptions(optionsConverter.convertStyle({...tabsStyle, ...appStyle}));
+    Navigation.setDefaultOptions(optionsConverter.convertStyle({ ...tabsStyle, ...appStyle }));
     screen.passProps = passProps;
-    Navigation.setRoot({root: layoutGenerator.convertSingleScreen(screen, drawer, components)});
+    Navigation.setRoot({ root: layoutGenerator.convertSingleScreen(screen, drawer, components) });
   }
 
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
@@ -63,8 +63,8 @@ Navigation.registerComponent = (name, generator, store, provider) => {
         this.originalRef.props.navigator.isVisible = true;
       }
       if (this._isRegisteredToNavigatorEvents()) {
-        this.originalRef.props.navigator.eventFunc({id: 'willAppear'});
-        this.originalRef.props.navigator.eventFunc({id: 'didAppear'});
+        this.originalRef.props.navigator.eventFunc({ id: 'willAppear' });
+        this.originalRef.props.navigator.eventFunc({ id: 'didAppear' });
       }
     }
 
@@ -77,14 +77,19 @@ Navigation.registerComponent = (name, generator, store, provider) => {
       }
 
       if (this._isRegisteredToNavigatorEvents()) {
-        this.originalRef.props.navigator.eventFunc({id: 'willDisappear'});
-        this.originalRef.props.navigator.eventFunc({id: 'didDisappear'});
+        this.originalRef.props.navigator.eventFunc({ id: 'willDisappear' });
+        this.originalRef.props.navigator.eventFunc({ id: 'didDisappear' });
       }
     }
 
     onNavigationButtonPressed(id) {
       if (this._isRegisteredToNavigatorEvents()) {
-        this.originalRef.props.navigator.eventFunc({id});
+        this.originalRef.props.navigator.eventFunc(
+          {
+            id,
+            type: 'NavBarButtonPress'
+          }
+        );
       }
     }
 
