@@ -39,6 +39,9 @@ export function generateNavigator(component) {
         Navigation.dismissModal(topModalComponentId);
       }
     },
+    dismissAllModals() {
+      Navigation.dismissAllModals();
+    },
     setButtons(buttons) {
       if (buttons.rightButtons || buttons.leftButtons) {
         Navigation.mergeOptions(this.id, {
