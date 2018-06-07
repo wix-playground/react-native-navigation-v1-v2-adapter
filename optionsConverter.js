@@ -27,10 +27,10 @@ export function convertStyle(style = {}, buttons = {}) {
       noBorder: style.navBarNoBorder,
       blur: style.navBarBlur,
       largeTitle: style.largeTitle,
-      // backButtonImage: style.?,
+      backButtonImage: style.backButtonImage,
       // backButtonHidden: style.?,
       // backButtonTitle: style.?,
-      // hideBackButtonTitle: style.?,
+      hideBackButtonTitle: style.hideBackButtonTitle,
       // component: ,
       ...buttons,
       title: {
