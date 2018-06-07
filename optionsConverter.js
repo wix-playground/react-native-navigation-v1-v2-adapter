@@ -1,6 +1,7 @@
 import {generateGuid} from './utils';
 
 export function convertStyle(style = {}, buttons = {}) {
+  style = {...style, ...style.navigatorStyle}
     if (style.navigatorButtons) {
       buttons = convertButtons(style.navigatorButtons);
     }
@@ -65,22 +66,10 @@ export function convertStyle(style = {}, buttons = {}) {
       icon: style.icon,
       selectedIcon: style.selectedIcon,
       iconInsets: style.iconInsets
-    }
-    // bottomTabs: {
-    //   visible: !style.tabBarHidden,
-    //   // animate: style.?,
-    //   // currentTabIndex: style.?,
-    //   testID: style.testID,
-    //   drawBehind: style.drawUnderTabBar,
-    //   // currentTabId: style.?,
-    //   // translucent: style.?,
-    //   hideShadow: !style.topBarElevationShadowEnabled,
-    //   backgroundColor: style.,
-    //   tabColor: style.,
-    //   selectedTabColor: style.,
-    //   fontFamily: style.,
-    //   fontSize: style.
-    // },
+    },
+    bottomTabs: {
+      visible: !style.tabBarHidden
+    },
     // sideMenu: {
     //   left: {
     //     visible: false,
