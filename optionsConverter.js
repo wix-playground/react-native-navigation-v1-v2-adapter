@@ -87,10 +87,14 @@ export function convertStyle(style = {}, buttons = {}) {
 }
 
 export function convertButtons(buttons) {
-  return {
-    leftButtons: buttons.leftButtons ? processButtonsArray(buttons.leftButtons) : [],
-    rightButtons: buttons.rightButtons ? processButtonsArray(buttons.rightButtons) : []
-  };
+  const converted = {};
+  if (buttons.leftButtons) {
+    converted.leftButtons = processButtonsArray(buttons.leftButtons);
+  }
+  if (buttons.rightButtons) {
+    converted.rightButtons = processButtonsArray(buttons.rightButtons);
+  }
+  return converted;
 }
 
 function processButtonsArray(buttons) {
