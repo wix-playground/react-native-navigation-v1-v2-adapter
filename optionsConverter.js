@@ -27,12 +27,15 @@ export function convertStyle(style = {}, buttons = {}) {
       drawBehind: style.drawUnderNavBar,
       noBorder: style.navBarNoBorder,
       blur: style.navBarBlur,
-      largeTitle: style.largeTitle,
+      largeTitle: {
+        visible: style.largeTitle
+      },
+      backButton: {
+        image: style.backButtonImage,
+        hideTitle: style.hideBackButtonTitle
+      },
       backButtonImage: style.backButtonImage,
-      // backButtonHidden: style.?,
-      // backButtonTitle: style.?,
       hideBackButtonTitle: style.hideBackButtonTitle,
-      // component: ,
       ...buttons,
       title: {
         text: style.title,
