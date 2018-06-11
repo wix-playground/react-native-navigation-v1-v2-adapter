@@ -166,3 +166,4 @@ The adapter does its magic by swizzling a few method and adding another set of m
 	}
 
 	```
+
