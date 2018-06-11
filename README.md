@@ -1,6 +1,7 @@
 # react-native-navigation-v1-v2-adapter - WIP
 React Native Navigation v1 to v2 adapter
 
+[![npm (tag)](https://img.shields.io/npm/v/react-native-navigation-v1-v2-adapter/latest.svg)](https://github.com/wix-playground/react-native-navigation-v1-v2-adapter#react-native-navigation-v1-v2-adapter---wip)
 [![Build Status](https://travis-ci.org/wix-playground/react-native-navigation-v1-v2-adapter.svg?branch=master)](https://travis-ci.org/wix-playground/react-native-navigation-v1-v2-adapter)
 
 # Installing
