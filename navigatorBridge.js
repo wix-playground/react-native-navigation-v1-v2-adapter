@@ -21,9 +21,11 @@ export function generateNavigator(component) {
     push(params) {
       setPropsCommandType(params, "Push");
       appendBackHandlerIfNeeded(this, params);
+      appendAnimationType('push', params);
       Navigation.push(this.id, layoutConverter.convertComponent(params));
     },
-    pop() {
+    pop(params) {
+      appendAnimationType('pop', params);
       Navigation.pop(this.id);
     },
     popToRoot() {
@@ -34,10 +36,12 @@ export function generateNavigator(component) {
     },
     showModal(params) {
       appendBackHandlerIfNeeded(this, params);
+      appendAnimationType('showModal', params);
       Navigation.showModal(params);
     },
-    dismissModal() {
+    dismissModal(params) {
       const topModalComponentId = modalsPresented.pop();
+      appendAnimationType('dismissModal', params);
       if (topModalComponentId) {
         Navigation.dismissModal(topModalComponentId);
       }
@@ -130,6 +134,14 @@ export function generateNavigator(component) {
   };
 
   return navigator;
+}
+
+function appendAnimationType(method, params) {
+  params.animations = {
+    [method]: {
+      enable: params.animationType === 'none' ? false : true
+    }
+  }
 }
 
 function appendBackHandlerIfNeeded(navigator, params) {

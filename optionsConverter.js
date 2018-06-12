@@ -14,6 +14,7 @@ export function convertStyle(style = {}, buttons = {}) {
       style: style.statusBarTextColorScheme,
       hidden: style.statusBarHidden
     },
+    animations: style.animations,
     popGesture: style.disabledBackGesture ? !style.disabledBackGesture : undefined,
     backgroundImage: style.screenBackgroundImageName,
     rootBackgroundImage: style.rootBackgroundImageName,
