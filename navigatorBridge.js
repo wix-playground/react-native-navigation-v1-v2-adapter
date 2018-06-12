@@ -6,11 +6,20 @@ import {BackHandler} from 'react-native';
 
 const modalsPresented = [];
 const originalShowModal = Navigation.showModal.bind(Navigation);
+const originalDismissModal = Navigation.dismissModal.bind(Navigation);
+
 Navigation.showModal = (params) => {
   setPropsCommandType(params, "ShowModal");
   const layout = layoutConverter.convertComponentStack(params);
   originalShowModal(layout);
   modalsPresented.push(layout.stack.children[0].component.id);
+};
+
+Navigation.dismissModal = () => {
+  const topModalComponentId = modalsPresented.pop();
+  if (topModalComponentId) {
+    originalDismissModal(topModalComponentId);
+  }
 };
 
 export function generateNavigator(component) {
@@ -40,11 +49,8 @@ export function generateNavigator(component) {
       Navigation.showModal(params);
     },
     dismissModal(params) {
-      const topModalComponentId = modalsPresented.pop();
       appendAnimationType('dismissModal', params);
-      if (topModalComponentId) {
-        Navigation.dismissModal(topModalComponentId);
-      }
+      Navigation.dismissModal();
     },
     dismissAllModals() {
       Navigation.dismissAllModals();
@@ -79,7 +85,7 @@ export function generateNavigator(component) {
     toggleTabs({to, animated}) {
       Navigation.mergeOptions(this.id, {
         bottomTabs: {
-          visible: to === 'shown',
+          visible: (to === 'shown' || to === 'show'),
           animated
         }
       });
