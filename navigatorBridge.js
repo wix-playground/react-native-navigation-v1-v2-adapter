@@ -2,6 +2,7 @@ import {Navigation} from 'react-native-navigation';
 import * as layoutConverter from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
 import {generateGuid} from './utils';
+import {BackHandler} from 'react-native';
 
 const modalsPresented = [];
 const originalShowModal = Navigation.showModal.bind(Navigation);
@@ -19,6 +20,7 @@ export function generateNavigator(component) {
     eventFunc: undefined,
     push(params) {
       setPropsCommandType(params, "Push");
+      appendBackHandlerIfNeeded(this, params);
       Navigation.push(this.id, layoutConverter.convertComponent(params));
     },
     pop() {
@@ -31,6 +33,7 @@ export function generateNavigator(component) {
       Navigation.setStackRoot(this.id, layoutConverter.convertComponent(params));
     },
     showModal(params) {
+      appendBackHandlerIfNeeded(this, params);
       Navigation.showModal(params);
     },
     dismissModal() {
@@ -127,6 +130,17 @@ export function generateNavigator(component) {
   };
 
   return navigator;
+}
+
+function appendBackHandlerIfNeeded(navigator, params) {
+  if (params.overrideBackPress) {
+    BackHandler.addEventListener('hardwareBackPress', function () {
+      navigator.eventFunc({
+        id: 'backPress',
+        type: 'NavBarButtonPress'
+      });
+    });
+  }
 }
 
 function setPropsCommandType(params, commandType) {
