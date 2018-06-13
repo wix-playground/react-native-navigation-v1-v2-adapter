@@ -143,9 +143,11 @@ export function generateNavigator(component) {
 }
 
 function appendAnimationType(method, params) {
-  params.animations = {
-    [method]: {
-      enable: params.animationType === 'none' ? false : true
+  if (params) {
+    params.animations = {
+      [method]: {
+        enable: params.animationType === 'none' ? false : true
+      }
     }
   }
 }
