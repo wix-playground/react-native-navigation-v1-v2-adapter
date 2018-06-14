@@ -8,17 +8,22 @@ const modalsPresented = [];
 const originalShowModal = Navigation.showModal.bind(Navigation);
 const originalDismissModal = Navigation.dismissModal.bind(Navigation);
 
-Navigation.showModal = (params) => {
+Navigation.showModal = async (params) => {
   setPropsCommandType(params, "ShowModal");
+  mergeAnimationType('showModal', params);
   const layout = layoutConverter.convertComponentStack(params);
-  originalShowModal(layout);
   modalsPresented.push(layout.stack.children[0].component.id);
+  return await originalShowModal(layout);
 };
 
-Navigation.dismissModal = () => {
+Navigation.dismissModal = async (params) => {
   const topModalComponentId = modalsPresented.pop();
+  mergeAnimationType('dismissModal', params);
+  Navigation.mergeOptions(topModalComponentId, params);
   if (topModalComponentId) {
-    originalDismissModal(topModalComponentId);
+    return await originalDismissModal(topModalComponentId);
+  } else {
+    return;
   }
 };
 
@@ -30,11 +35,11 @@ export function generateNavigator(component) {
     push(params) {
       setPropsCommandType(params, "Push");
       appendBackHandlerIfNeeded(this, params);
-      appendAnimationType('push', params);
+      mergeAnimationType('push', params);
       Navigation.push(this.id, layoutConverter.convertComponent(params));
     },
     pop(params) {
-      appendAnimationType('pop', params);
+      mergeAnimationType('pop', params);
       Navigation.pop(this.id);
     },
     popToRoot() {
@@ -43,14 +48,12 @@ export function generateNavigator(component) {
     resetTo(params) {
       Navigation.setStackRoot(this.id, layoutConverter.convertComponent(params));
     },
-    showModal(params) {
+    async showModal(params) {
       appendBackHandlerIfNeeded(this, params);
-      appendAnimationType('showModal', params);
-      Navigation.showModal(params);
+      return await Navigation.showModal(params);
     },
-    dismissModal(params) {
-      appendAnimationType('dismissModal', params);
-      Navigation.dismissModal();
+    async dismissModal(params) {
+      return await Navigation.dismissModal(params);
     },
     dismissAllModals() {
       Navigation.dismissAllModals();
@@ -142,13 +145,14 @@ export function generateNavigator(component) {
   return navigator;
 }
 
-function appendAnimationType(method, params) {
+function mergeAnimationType(method, params) {
   if (params) {
-    params.animations = {
+    const animations = {
       [method]: {
         enable: params.animationType === 'none' ? false : true
       }
-    }
+    };
+    params.animations = {...params.animations, ...animations};
   }
 }
 
