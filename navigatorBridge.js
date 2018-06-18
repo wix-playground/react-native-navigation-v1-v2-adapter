@@ -18,8 +18,8 @@ Navigation.showModal = async (params) => {
 
 Navigation.dismissModal = async (params) => {
   const topModalComponentId = modalsPresented.pop();
-  mergeAnimationType('dismissModal', params);
   if (params) {
+    mergeAnimationType('dismissModal', params);
     Navigation.mergeOptions(topModalComponentId, params);
   }
 
