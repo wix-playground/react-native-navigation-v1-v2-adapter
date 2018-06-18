@@ -56,6 +56,15 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
 
     componentDidAppear() {
+      Navigation.events().registerNativeEventListener((name, params) => {
+        if (this._isRegisteredToNavigatorEvents()) {
+          if (name === 'bottomTabSelected') {
+            const eventType = params['selectedTabIndex'] === params['unselectedTabIndex'] ? 'bottomTabReselected' : 'bottomTabSelected';
+            this.originalRef.props.navigator.eventFunc({ id: eventType, type: eventType });
+          }
+        }
+      });
+
       if (this.originalRef.componentDidAppear)
         this.originalRef.componentDidAppear();
 
