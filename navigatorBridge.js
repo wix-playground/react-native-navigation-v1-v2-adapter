@@ -34,7 +34,7 @@ export function generateNavigator(component) {
   const navigator = {
     id: generateGuid(),
     isVisible: false,
-    eventFunc: undefined,
+    eventListeners: [],
     push(params) {
       setPropsCommandType(params, "Push");
       appendBackHandlerIfNeeded(this, params);
@@ -138,10 +138,15 @@ export function generateNavigator(component) {
       return this.isVisible;
     },
     addOnNavigatorEvent(func) {
-      this.eventFunc = func;
+      this.eventListeners.push(func);
     },
     setOnNavigatorEvent(func) {
-      this.eventFunc = func;
+      this.eventListeners = [func];
+    },
+    eventFunc(params) {
+      this.eventListeners.forEach(listener => {
+        listener(params);
+      });
     }
   };
 
