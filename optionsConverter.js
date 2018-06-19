@@ -1,10 +1,10 @@
-import {generateGuid} from './utils';
+import { generateGuid } from './utils';
 
 export function convertStyle(style = {}, buttons = {}) {
-  style = {...style, ...style.navigatorStyle}
-    if (style.navigatorButtons) {
-      buttons = convertButtons(style.navigatorButtons);
-    }
+  style = { ...style, ...style.navigatorStyle }
+  if (style.navigatorButtons) {
+    buttons = convertButtons(style.navigatorButtons);
+  }
   return {
     screenBackgroundColor: style.screenBackgroundColor,
     orientation: style.orientation,
