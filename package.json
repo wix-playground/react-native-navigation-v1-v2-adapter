@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation-v1-v2-adapter",
-  "version": "1.3.3",
+  "version": "1.3.17",
   "description": "React Native Navigation v2 adapter",
   "main": "index.js",
   "scripts": {
