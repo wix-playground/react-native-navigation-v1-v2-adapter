@@ -1,4 +1,6 @@
 import { generateGuid } from './utils';
+import { Platform } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 
 export function convertStyle(style = {}, buttons = {}) {
   style = { ...style, ...style.navigatorStyle }
@@ -109,6 +111,9 @@ function processButtonsArray(buttons) {
         passProps: button.passProps
       };
       button.id = button.id ? button.id : generateGuid();
+      if (button.id === 'back' && Platform.OS === 'android') {
+        button.id = Navigation.constants().backButtonId;
+      }
     }
     button.enabled = !button.disabled;
 
