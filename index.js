@@ -51,49 +51,40 @@ Navigation.registerComponent = (name, generator, store, provider) => {
       }
     }
 
-    componentWillUnmount() {
-      this.originalRef = undefined;
-    }
-
     componentDidAppear() {
       Navigation.events().registerNativeEventListener((name, params) => {
         if (this._isRegisteredToNavigatorEvents()) {
           if (name === 'bottomTabSelected') {
             const eventType = params['selectedTabIndex'] === params['unselectedTabIndex'] ? 'bottomTabReselected' : 'bottomTabSelected';
-            this.originalRef.props.navigator.eventFunc({ id: eventType, type: eventType });
+            this.props.navigator.eventFunc({ id: eventType, type: eventType });
           }
         }
       });
 
-      if (this.originalRef.componentDidAppear)
-        this.originalRef.componentDidAppear();
-
-      if (this.originalRef && this.originalRef.props) {
-        this.originalRef.props.navigator.isVisible = true;
+      if (this.props) {
+        this.props.navigator.isVisible = true;
       }
+      
       if (this._isRegisteredToNavigatorEvents()) {
-        this.originalRef.props.navigator.eventFunc({ id: 'willAppear' });
-        this.originalRef.props.navigator.eventFunc({ id: 'didAppear' });
+        this.props.navigator.eventFunc({ id: 'willAppear' });
+        this.props.navigator.eventFunc({ id: 'didAppear' });
       }
     }
 
     componentDidDisappear() {
-      if (this.originalRef.componentDidDisappear)
-        this.originalRef.componentDidDisappear();
-
-      if (this.originalRef && this.originalRef.props) {
-        this.originalRef.props.navigator.isVisible = false;
+      if (this.props) {
+        this.props.navigator.isVisible = false;
       }
 
       if (this._isRegisteredToNavigatorEvents()) {
-        this.originalRef.props.navigator.eventFunc({ id: 'willDisappear' });
-        this.originalRef.props.navigator.eventFunc({ id: 'didDisappear' });
+        this.props.navigator.eventFunc({ id: 'willDisappear' });
+        this.props.navigator.eventFunc({ id: 'didDisappear' });
       }
     }
 
     onNavigationButtonPressed(id) {
       if (this._isRegisteredToNavigatorEvents()) {
-        this.originalRef.props.navigator.eventFunc(
+        this.props.navigator.eventFunc(
           {
             id,
             type: 'NavBarButtonPress'
@@ -103,13 +94,13 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
 
     _isRegisteredToNavigatorEvents() {
-      return this.originalRef && this.originalRef.props && this.originalRef.props.navigator.eventFunc;
+      return this.props && this.props.navigator.eventListeners.length > 0;
     }
 
     render() {
       const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
       return (
-        <Component ref={(r) => this.originalRef = r} {...this.props} />
+        <Component {...this.props} />
       );
     }
   }
