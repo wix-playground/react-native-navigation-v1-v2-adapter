@@ -14,7 +14,7 @@ export function convertStyle(style = {}, buttons = {}) {
       blur: style.statusBarBlur,
       hideWithTopBar: style.statusBarHideWithNavBar,
       style: style.statusBarTextColorScheme,
-      hidden: style.statusBarHidden
+      visible: style.statusBarHidden ? !style.statusBarHidden : undefined,
     },
     animations: style.animations,
     popGesture: style.disabledBackGesture ? !style.disabledBackGesture : undefined,
