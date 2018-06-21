@@ -1,7 +1,16 @@
 import React from 'react';
 
-export function printFuncExecution(funcName, ...args) {
-  console.log(`Navigation.${funcName}(${JSON.stringify(...args, null, '\t')});`);
+export function printFuncExecution(funcName, args) {
+  console.log(`Navigation.${funcName}(${argsToString(args)});`);
+}
+
+function argsToString(args) {
+  let argsArray = [];
+  Object.values(args).forEach(arg => {
+    argsArray.push(JSON.stringify(arg, null, '\t'));
+  });
+
+  return argsArray.join(', ');
 }
 
 export function generateGuid() {
@@ -13,16 +22,16 @@ export function generateGuid() {
   return s4() + s4();
 }
 
-export function logNavigationExecution(Navigation) {
-  const navigationMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(Navigation));
+export function logExecution(object) {
+  const navigationMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(object));
   navigationMethods.forEach((methodName) => {
-    if (Navigation[`_${methodName}`]) {
+    if (object[`_${methodName}`]) {
       return;
     }
-    const oldPrototype = Navigation[methodName];
+    const oldPrototype = object[methodName];
 
-    Navigation[methodName] = function () {
-      printFuncExecution(methodName, Array.from(arguments));
+    object[methodName] = function () {
+      printFuncExecution(methodName, arguments);
       return oldPrototype.apply(this, arguments);
     };
   });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as navigationModule from 'react-native-navigation';
 import * as layoutGenerator from './layoutConverter';
 import * as optionsConverter from './optionsConverter';
-import { wrapReduxComponent } from './utils';
+import { wrapReduxComponent, logExecution } from './utils';
 import ScreenVisibilityListener from './ScreenVisibilityListener';
 
 navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
@@ -108,6 +108,9 @@ Navigation.registerComponent = (name, generator, store, provider) => {
   originalRegisterComponent(name, () => Wrapped);
 };
 
+Navigation.logExecution = () => {
+  logExecution(Navigation);
+};
 
 module.exports = {
   Navigation,
