@@ -95,15 +95,15 @@ export function convertStyle(style = {}, buttons = {}) {
 export function convertButtons(buttons) {
   const converted = {};
   if (buttons.leftButtons) {
-    converted.leftButtons = processButtonsArray(buttons.leftButtons);
+    converted.leftButtons = processButtonsArray(buttons.leftButtons, 'leftButtons');
   }
   if (buttons.rightButtons) {
-    converted.rightButtons = processButtonsArray(buttons.rightButtons);
+    converted.rightButtons = processButtonsArray(buttons.rightButtons, 'rightButtons');
   }
   return converted;
 }
 
-function processButtonsArray(buttons) {
+function processButtonsArray(buttons, type) {
   return buttons.map((button) => {
     if (typeof button.component === 'string') {
       button.component = {
@@ -111,9 +111,9 @@ function processButtonsArray(buttons) {
         passProps: button.passProps
       };
       button.id = button.id ? button.id : generateGuid();
-      if (button.id === 'back' && Platform.OS === 'android') {
-        button.id = Navigation.constants().backButtonId;
-      }
+    }
+    if (type === 'leftButtons' && button.id === 'back' && Platform.OS === 'android') {
+      button.id = Navigation.constants().backButtonId;
     }
     button.enabled = !button.disabled;
 
