@@ -74,7 +74,7 @@ export function convertStyle(style = {}, buttons = {}) {
       iconInsets: style.iconInsets
     },
     bottomTabs: {
-      visible: !style.tabBarHidden
+      visible: style.tabBarHidden ? !style.tabBarHidden : undefined
     },
     // sideMenu: {
     //   left: {
