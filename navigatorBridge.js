@@ -9,6 +9,10 @@ const originalShowModal = Navigation.showModal.bind(Navigation);
 const originalDismissModal = Navigation.dismissModal.bind(Navigation);
 
 Navigation.showModal = async (params) => {
+  if (isV2ShowModalAPI(params)) {
+    return await originalShowModal(params);
+  }
+
   setPropsCommandType(params, "ShowModal");
   mergeAnimationType('showModal', params);
   const layout = layoutConverter.convertComponentStack(params);
@@ -17,6 +21,10 @@ Navigation.showModal = async (params) => {
 };
 
 Navigation.dismissModal = async (params) => {
+  if (isV2DismissModalAPI(params)) {
+    return await originalDismissModal(params);
+  }
+
   const topModalComponentId = modalsPresented.pop();
   if (params) {
     mergeAnimationType('dismissModal', params);
@@ -29,6 +37,14 @@ Navigation.dismissModal = async (params) => {
     return;
   }
 };
+
+function isV2ShowModalAPI(params) {
+  return params.screen == undefined;
+}
+
+function isV2DismissModalAPI(params) {
+  return (typeof params === 'string' || params instanceof String);
+}
 
 export function generateNavigator(component) {
   const navigator = {
