@@ -61,8 +61,12 @@ Navigation.registerComponent = (name, generator, store, provider) => {
         }
       });
 
-      if (this.props) {
+      if (this.props && this.props.navigator) {
         this.props.navigator.isVisible = true;
+      }
+
+      if (this.ref && this.ref.componentDidAppear) {
+        this.ref.componentDidAppear();
       }
       
       if (this._isRegisteredToNavigatorEvents()) {
@@ -72,8 +76,12 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
 
     componentDidDisappear() {
-      if (this.props) {
+      if (this.props && this.props.navigator) {
         this.props.navigator.isVisible = false;
+      }
+
+      if (this.ref && this.ref.componentDidDisappear) {
+        this.ref.componentDidDisappear();
       }
 
       if (this._isRegisteredToNavigatorEvents()) {
@@ -83,6 +91,10 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
 
     onNavigationButtonPressed(id) {
+      if (this.ref && this.ref.onNavigationButtonPressed) {
+        this.ref.onNavigationButtonPressed(id);
+      }
+
       if (this._isRegisteredToNavigatorEvents()) {
         this.props.navigator.eventFunc(
           {
@@ -94,13 +106,13 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
 
     _isRegisteredToNavigatorEvents() {
-      return this.props && this.props.navigator.eventListeners.length > 0;
+      return this.props && this.props.navigator && this.props.navigator.eventListeners.length > 0;
     }
 
     render() {
       const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
       return (
-        <Component {...this.props} />
+        <Component ref={(r) => this.ref = r} {...this.props} />
       );
     }
   }
