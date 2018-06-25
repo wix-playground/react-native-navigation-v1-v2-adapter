@@ -17,7 +17,7 @@ export function convertBottomTabs(tabs, drawer) {
   return {
     bottomTabs: {
       children: tabs.map((tab) => {
-        return convertComponentStack(tab);
+        return convertComponentStack(tab, tab.components);
       })
     }
   };
