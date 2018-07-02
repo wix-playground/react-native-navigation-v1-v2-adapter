@@ -66,7 +66,7 @@ export function convertStyle(style = {}, buttons = {}) {
       }
     },
     bottomTab: {
-      title: style.label,
+      text: style.label,
       // badge: style.badge,
       testID: style.testID,
       icon: style.icon,
