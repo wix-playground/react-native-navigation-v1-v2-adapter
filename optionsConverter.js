@@ -71,7 +71,11 @@ export function convertStyle(style = {}, buttons = {}) {
       testID: style.testID,
       icon: style.icon,
       selectedIcon: style.selectedIcon,
-      iconInsets: style.iconInsets
+      iconInsets: style.iconInsets,
+      iconColor: style.tabBarButtonColor,
+      selectedIconColor: style.tabBarSelectedButtonColor,
+      tabBarTextColor: style.tabBarTextColor,
+      selectedTextColor: style.tabBarSelectedTextColor
     },
     bottomTabs: {
       visible: style.tabBarHidden ? !style.tabBarHidden : undefined
