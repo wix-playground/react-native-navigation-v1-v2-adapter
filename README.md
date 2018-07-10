@@ -133,7 +133,7 @@ The adapter does its magic by swizzling a few method and adding another set of m
 	```diff
 	include ':app'
 	-project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
-	+project(':react-native-navigation2').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
+	+project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 	```
 
 5. Edit `MainApplication.java` - Only if your app has a single index file
