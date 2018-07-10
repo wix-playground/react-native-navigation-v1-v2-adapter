@@ -120,7 +120,6 @@ function processButtonsArray(buttons, type) {
       button.id = Navigation.constants().backButtonId;
     }
     button.enabled = !button.disabled;
-    button.text = button.title;
 
     return button;
   });

@@ -7,22 +7,9 @@ import {BackHandler} from 'react-native';
 const modalsPresented = [];
 const originalShowModal = Navigation.showModal.bind(Navigation);
 const originalDismissModal = Navigation.dismissModal.bind(Navigation);
-const originalSetRoot = Navigation.setRoot.bind(Navigation);
-const originalPush = Navigation.push.bind(Navigation);
-
-Navigation.setRoot = async (layout) => {
-  injectNavigator(layout);
-  originalSetRoot(layout);
-}
-
-Navigation.push = async (componentId, layout) => {
-  injectNavigator(layout);
-  originalPush(componentId, layout);
-}
 
 Navigation.showModal = async (params) => {
   if (isV2ShowModalAPI(params)) {
-    injectNavigator(params);
     return await originalShowModal(params);
   }
 
@@ -59,7 +46,7 @@ function isV2DismissModalAPI(params) {
   return (typeof params === 'string' || params instanceof String);
 }
 
-export function generateNavigator() {
+export function generateNavigator(component) {
   const navigator = {
     id: generateGuid(),
     isVisible: false,
@@ -209,23 +196,5 @@ function setPropsCommandType(params, commandType) {
     params.passProps.commandType = commandType;
   } else {
     params.passProps = {commandType}
-  }
-}
-
-function injectNavigator(layout) {
-  if (Array.isArray(layout)) {
-    layout.forEach(element => {
-      injectNavigator(element);
-    });
-  } else {
-    Object.keys(layout).forEach(key => {
-      if (key === 'component') {
-        const navigator = generateNavigator();
-        layout[key].passProps = { ...layout[key].passProps, navigator }
-        layout[key].id = navigator.id;
-      } else {
-        injectNavigator(layout[key]);
-      }
-    });
   }
 }
