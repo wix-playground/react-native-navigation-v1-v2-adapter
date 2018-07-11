@@ -51,22 +51,21 @@ Navigation.registerComponent = (name, generator, store, provider) => {
       }
     }
 
+    constructor(props) {
+      super(props);
+      Navigation.events().bindComponent(this);
+    }
+
     componentDidAppear() {
-      Navigation.events().registerNativeEventListener((name, params) => {
+      Navigation.events().registerBottomTabSelectedListener(({selectedTabIndex, unselectedTabIndex}) => {
         if (this._isRegisteredToNavigatorEvents()) {
-          if (name === 'bottomTabSelected') {
-            const eventType = params['selectedTabIndex'] === params['unselectedTabIndex'] ? 'bottomTabReselected' : 'bottomTabSelected';
-            this.props.navigator.eventFunc({ id: eventType, type: eventType });
-          }
+          const eventType = selectedTabIndex === unselectedTabIndex ? 'bottomTabReselected' : 'bottomTabSelected';
+          this.props.navigator.eventFunc({ id: eventType, type: eventType });
         }
       });
 
       if (this.props && this.props.navigator) {
         this.props.navigator.isVisible = true;
-      }
-
-      if (this.ref && this.ref.componentDidAppear) {
-        this.ref.componentDidAppear();
       }
       
       if (this._isRegisteredToNavigatorEvents()) {
@@ -80,25 +79,17 @@ Navigation.registerComponent = (name, generator, store, provider) => {
         this.props.navigator.isVisible = false;
       }
 
-      if (this.ref && this.ref.componentDidDisappear) {
-        this.ref.componentDidDisappear();
-      }
-
       if (this._isRegisteredToNavigatorEvents()) {
         this.props.navigator.eventFunc({ id: 'willDisappear' });
         this.props.navigator.eventFunc({ id: 'didDisappear' });
       }
     }
 
-    onNavigationButtonPressed(id) {
-      if (this.ref && this.ref.onNavigationButtonPressed) {
-        this.ref.onNavigationButtonPressed(id);
-      }
-
+    navigationButtonPressed({buttonId}) {
       if (this._isRegisteredToNavigatorEvents()) {
         this.props.navigator.eventFunc(
           {
-            id,
+            id: buttonId,
             type: 'NavBarButtonPress'
           }
         );
