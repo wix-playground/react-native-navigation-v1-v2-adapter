@@ -9,6 +9,14 @@ navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
 const Navigation = navigationModule.Navigation;
 const appLaunched = false;
 const originalRegisterComponent = Navigation.registerComponent.bind(Navigation);
+const originalBindComponent = Navigation.events().bindComponent.bind(Navigation);
+
+Navigation.events().bindComponent = (component) => {
+  if (!component.props.componentId && component.props.navigator) {
+    component.props = {componentId: component.props.navigator.id, ...component.props};
+  }
+  originalBindComponent(component);
+}
 
 Navigation.events().registerAppLaunchedListener(() => {
   appLaunched = true;
