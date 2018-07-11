@@ -37,7 +37,8 @@ export function convertComponent(oldComponent) {
     passProps: {
       navigator,
       ...oldComponent,
-      ...oldComponent.passProps
+      ...oldComponent.passProps,
+      componentId: navigator.id
     },
     options: optionsConverter.convertStyle(oldComponent)
   };
