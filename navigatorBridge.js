@@ -223,9 +223,13 @@ function injectNavigator(layout) {
         const navigator = generateNavigator();
         layout[key].passProps = { ...layout[key].passProps, navigator }
         layout[key].id = navigator.id;
-      } else {
+      } else if (isObject(layout[key])) {
         injectNavigator(layout[key]);
       }
     });
+  }
+
+  function isObject(value) {
+    return Array.isArray(value) || (value && typeof value === 'object' && value.constructor === Object);
   }
 } 
