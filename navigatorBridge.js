@@ -61,7 +61,7 @@ function isV2DismissModalAPI(params) {
 
 export function generateNavigator(id) {
   const navigator = {
-    id: id || generateGuid(),
+    id: id != undefined ? id : generateGuid(),
     isVisible: false,
     eventListeners: [],
     push(params) {
@@ -220,7 +220,8 @@ function injectNavigator(layout) {
   } else {
     Object.keys(layout).forEach(key => {
       if (key === 'component') {
-        const navigator = generateNavigator(layout[key].id);
+        const id = isString(layout[key].id) ? layout[key].id : undefined;
+        const navigator = generateNavigator(id);
         layout[key].passProps = { ...layout[key].passProps, navigator }
         layout[key].id = navigator.id;
       } else if (isObject(layout[key])) {
@@ -232,4 +233,8 @@ function injectNavigator(layout) {
   function isObject(value) {
     return Array.isArray(value) || (value && typeof value === 'object' && value.constructor === Object);
   }
-} 
+
+  function isString(value) {
+    return (typeof value === 'string' || value instanceof String);
+  }
+}
