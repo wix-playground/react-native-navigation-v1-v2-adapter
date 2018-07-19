@@ -59,9 +59,9 @@ function isV2DismissModalAPI(params) {
   return (typeof params === 'string' || params instanceof String);
 }
 
-export function generateNavigator(id) {
+export function generateNavigator() {
   const navigator = {
-    id: id || generateGuid(),
+    id: generateGuid(),
     isVisible: false,
     eventListeners: [],
     push(params) {
@@ -220,7 +220,7 @@ function injectNavigator(layout) {
   } else {
     Object.keys(layout).forEach(key => {
       if (key === 'component') {
-        const navigator = generateNavigator(layout[key].id);
+        const navigator = generateNavigator();
         layout[key].passProps = { ...layout[key].passProps, navigator }
         layout[key].id = navigator.id;
       } else if (isObject(layout[key])) {
