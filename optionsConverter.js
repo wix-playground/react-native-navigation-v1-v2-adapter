@@ -65,6 +65,7 @@ export function convertStyle(style = {}, buttons = {}) {
         // }
       }
     },
+    fab: buttons.fab,
     bottomTab: {
       text: style.label,
       // badge: style.badge,
@@ -104,6 +105,9 @@ export function convertButtons(buttons) {
   if (buttons.rightButtons) {
     converted.rightButtons = processButtonsArray(buttons.rightButtons, 'rightButtons');
   }
+  if (buttons.fab) {
+    converted.fab = processFab(buttons.fab)
+  }
   return converted;
 }
 
@@ -124,4 +128,13 @@ function processButtonsArray(buttons, type) {
 
     return button;
   });
+}
+
+function processFab(fab) {
+  return {
+    id: fab.collapsedId,
+    backgroundColor: fab.backgroundColor,
+    icon: fab. collapsedIcon,
+    alignHorizontally: 'right',
+  }
 }
