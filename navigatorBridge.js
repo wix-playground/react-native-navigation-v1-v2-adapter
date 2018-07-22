@@ -91,7 +91,7 @@ export function generateNavigator() {
       Navigation.dismissAllModals();
     },
     setButtons(buttons) {
-      if (buttons.rightButtons || buttons.leftButtons) {
+      if (buttons.rightButtons || buttons.leftButtons || buttons.fab) {
         Navigation.mergeOptions(this.id, {
           topBar: {
             ...optionsConverter.convertButtons(buttons)
