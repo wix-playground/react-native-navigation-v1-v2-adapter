@@ -30,9 +30,9 @@ export function convertComponent(oldComponent) {
 
   oldComponent = Object.assign(oldComponent, oldComponent.navigatorStyle);
 
-  const navigator = generateNavigator(oldComponent);
+  const navigator = generateNavigator(oldComponent.id);
   const component = {
-    id: navigator.id,
+    id: oldComponent.id ? oldComponent.id : navigator.id,
     name: oldComponent.screen,
     passProps: {
       navigator,

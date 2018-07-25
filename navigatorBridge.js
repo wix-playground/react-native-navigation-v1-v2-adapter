@@ -59,9 +59,9 @@ function isV2DismissModalAPI(params) {
   return (typeof params === 'string' || params instanceof String);
 }
 
-export function generateNavigator() {
+export function generateNavigator(componentId) {
   const navigator = {
-    id: generateGuid(),
+    id: componentId ? componentId : generateGuid(),
     isVisible: false,
     eventListeners: [],
     push(params) {
@@ -91,7 +91,7 @@ export function generateNavigator() {
       Navigation.dismissAllModals();
     },
     setButtons(buttons) {
-      if (buttons.rightButtons || buttons.leftButtons) {
+      if (buttons.rightButtons || buttons.leftButtons || buttons.fab) {
         Navigation.mergeOptions(this.id, {
           topBar: {
             ...optionsConverter.convertButtons(buttons)
@@ -220,7 +220,8 @@ function injectNavigator(layout) {
   } else {
     Object.keys(layout).forEach(key => {
       if (key === 'component') {
-        const navigator = generateNavigator();
+        const componentId = layout[key].id;
+        const navigator = generateNavigator(componentId);
         layout[key].passProps = { ...layout[key].passProps, navigator }
         layout[key].id = navigator.id;
       } else if (isObject(layout[key])) {
