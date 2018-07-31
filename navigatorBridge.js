@@ -7,17 +7,23 @@ import {BackHandler} from 'react-native';
 const modalsPresented = [];
 const originalShowModal = Navigation.showModal.bind(Navigation);
 const originalDismissModal = Navigation.dismissModal.bind(Navigation);
-const originalSetRoot = Navigation.setRoot.bind(Navigation);	
+const originalSetRoot = Navigation.setRoot.bind(Navigation);
+const originalSetStackRoot = Navigation.setStackRoot.bind(Navigation);
 const originalPush = Navigation.push.bind(Navigation);
 
 Navigation.setRoot = async (layout) => {	
   injectNavigator(layout);
   originalSetRoot(layout);
-}	
+}
 
 Navigation.push = async (componentId, layout) => {	
   injectNavigator(layout);
   originalPush(componentId, layout);
+}
+
+Navigation.setStackRoot = async (componentId, layout) => {	
+  injectNavigator(layout);
+  originalSetStackRoot(componentId, layout);
 }
 
 Navigation.showModal = async (params) => {
