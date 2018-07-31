@@ -122,7 +122,7 @@ function processButtonsArray(buttons, type) {
       button.id = button.id ? button.id : generateGuid();
     }
     if (type === 'leftButtons' && button.id === 'back' && Platform.OS === 'android') {
-      button.id = Navigation.constants().backButtonId;
+      button.id = 'RNN.back'
     }
     button.enabled = !button.disabled;
     button.text = button.title;
