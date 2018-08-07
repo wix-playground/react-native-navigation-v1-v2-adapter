@@ -2,11 +2,14 @@ import { generateGuid } from './utils';
 import { Platform } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
-export function convertStyle(style = {}, buttons = {}) {
+export function convertStyle(style = {}, buttons) {
   style = { ...style, ...style.navigatorStyle }
   if (style.navigatorButtons) {
     buttons = convertButtons(style.navigatorButtons);
+  } else if (buttons) {
+    buttons = convertButtons(buttons);
   }
+
   return {
     screenBackgroundColor: style.screenBackgroundColor,
     orientation: style.orientation,
@@ -66,7 +69,7 @@ export function convertStyle(style = {}, buttons = {}) {
         // }
       }
     },
-    fab: buttons.fab,
+    fab: buttons ? buttons.fab : undefined,
     bottomTab: {
       text: style.label,
       // badge: style.badge,
