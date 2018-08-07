@@ -10,7 +10,7 @@
   "author": "Yogev Ben David <yogev132@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "react-native-navigation": "^2.0.0",
+    "react-native-navigation": "2.0.2455",
     "react": "16.0.0",
     "semver": "^5.5.0"
   }
