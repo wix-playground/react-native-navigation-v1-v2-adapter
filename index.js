@@ -7,7 +7,7 @@ import ScreenVisibilityListener from './ScreenVisibilityListener';
 
 navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
 const Navigation = navigationModule.Navigation;
-const appLaunched = false;
+let appLaunched = false;
 const originalRegisterComponent = Navigation.registerComponent.bind(Navigation);
 const originalBindComponent = Navigation.events().bindComponent.bind(Navigation);
 
