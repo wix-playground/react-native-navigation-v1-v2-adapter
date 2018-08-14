@@ -15,7 +15,7 @@ Navigation.events().bindComponent = (component) => {
   if (!component.props.componentId && component.props.navigator) {
     component.props = {componentId: component.props.navigator.id, ...component.props};
   }
-  originalBindComponent(component);
+  return originalBindComponent(component);
 }
 
 Navigation.events().registerAppLaunchedListener(() => {
