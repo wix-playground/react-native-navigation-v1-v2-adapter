@@ -83,7 +83,8 @@ export function convertStyle(style = {}, buttons) {
       selectedTextColor: style.tabBarSelectedTextColor
     },
     bottomTabs: {
-      visible: style.tabBarHidden ? !style.tabBarHidden : undefined
+      visible: style.tabBarHidden ? !style.tabBarHidden : undefined,
+      drawBehind: style.drawUnderTabBar
     },
     // sideMenu: {
     //   left: {
