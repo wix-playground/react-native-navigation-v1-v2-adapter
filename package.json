@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation-v1-v2-adapter",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "React Native Navigation v2 adapter",
   "main": "index.js",
   "scripts": {
@@ -9,8 +9,7 @@
   },
   "author": "Yogev Ben David <yogev132@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "react-native-navigation": "^2.0.0",
     "react": "*"
