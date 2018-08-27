@@ -111,7 +111,7 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     render() {
       const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
       return (
-        <Component ref={(r) => this.ref = r} {...this.props} />
+        <Component {...this.props} />
       );
     }
   }
