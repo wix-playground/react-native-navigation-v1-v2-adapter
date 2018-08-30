@@ -1,16 +1,16 @@
-import { generateGuid } from './utils';
-import { Platform } from 'react-native';
-import { Navigation } from 'react-native-navigation';
+import {generateGuid} from './utils';
+import {Platform} from 'react-native';
+import {Navigation} from 'react-native-navigation';
 
 export function convertStyle(style = {}, buttons) {
-  style = { ...style, ...style.navigatorStyle }
+  style = {...style, ...style.navigatorStyle}
   if (style.navigatorButtons) {
     buttons = convertButtons(style.navigatorButtons);
   } else if (buttons) {
     buttons = convertButtons(buttons);
   }
 
-  return {
+  const convertedStyle = {
     screenBackgroundColor: style.screenBackgroundColor,
     orientation: style.orientation,
     statusBar: {
@@ -59,20 +59,15 @@ export function convertStyle(style = {}, buttons) {
         text: style.subtitle,
         fontSize: style.navBarSubtitleFontSize,
         color: style.navBarSubtitleColor,
-        fontFamily: style.navBarSubtitleFontFamily,
-        // alignment: style.?
+        fontFamily: style.navBarSubtitleFontFamily
       },
       background: {
-        color: style.navBarBackgroundColor,
-        // component: {
-        //   // name: style.?
-        // }
+        color: style.navBarBackgroundColor
       }
     },
     fab: buttons ? buttons.fab : undefined,
     bottomTab: {
       text: style.label,
-      // badge: style.badge,
       testID: style.testID,
       icon: style.icon,
       selectedIcon: style.selectedIcon,
@@ -85,21 +80,18 @@ export function convertStyle(style = {}, buttons) {
     bottomTabs: {
       visible: style.tabBarHidden ? !style.tabBarHidden : undefined,
       drawBehind: style.drawUnderTabBar
-    },
-    // sideMenu: {
-    //   left: {
-    //     visible: false,
-    //     enabled: true
-    //   },
-    //   right: {
-    //     visible: false,
-    //     enabled: true
-    //   }
-    // },
-    // overlay: {
-    //   interceptTouchOutside: true
-    // }
+    }
   };
+  deleteUndefinedProperies(convertedStyle)
+  return convertedStyle;
+}
+
+function deleteUndefinedProperies(obj) {
+  Object.keys(obj).forEach(key => {
+    if (obj[key] && typeof obj[key] === 'object') deleteUndefinedProperies(obj[key]);
+    else if (obj[key] === undefined) delete obj[key];
+  });
+  return obj;
 }
 
 export function convertButtons(buttons) {
@@ -139,7 +131,7 @@ function processFab(fab) {
   return {
     id: fab.collapsedId,
     backgroundColor: fab.backgroundColor,
-    icon: fab. collapsedIcon,
+    icon: fab.collapsedIcon,
     alignHorizontally: 'right',
   }
 }
