@@ -1,6 +1,7 @@
 import {generateGuid} from './utils';
 import {Platform} from 'react-native';
 import {Navigation} from 'react-native-navigation';
+import _ from 'lodash';
 
 export function convertStyle(style = {}, buttons) {
   style = {...style, ...style.navigatorStyle}
@@ -82,7 +83,9 @@ export function convertStyle(style = {}, buttons) {
       drawBehind: style.drawUnderTabBar
     }
   };
-  deleteUndefinedProperies(convertedStyle)
+  deleteUndefinedProperies(convertedStyle);
+  deleteEmptyObjects(convertedStyle);
+
   return convertedStyle;
 }
 
@@ -92,6 +95,18 @@ function deleteUndefinedProperies(obj) {
     else if (obj[key] === undefined) delete obj[key];
   });
   return obj;
+}
+
+function deleteEmptyObjects(parentObject, key) {
+  const obj = key ? parentObject[key] : parentObject;
+  Object.keys(obj).forEach(key => {
+    if (_.isPlainObject(obj[key]))
+      deleteEmptyObjects(obj, key);
+  });
+
+  if (parentObject && _.isPlainObject(parentObject[key]) && Object.keys(parentObject[key]).length === 0) {
+    delete parentObject[key];
+  }
 }
 
 export function convertButtons(buttons) {
