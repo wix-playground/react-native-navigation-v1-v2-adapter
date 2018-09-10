@@ -109,7 +109,10 @@ The adapter does its magic by swizzling a few method and adding another set of m
 		compileSdkVersion 25
 	-        buildToolsVersion '26.0.2'
 	+        buildToolsVersion '27.0.3'
-
+	...
+	defaultConfig {
+	+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative56" //MATCH YOUR RN VERSION: 51, 55 or 56
+	}
 	...
 	+   compileOptions {
 	+       sourceCompatibility JavaVersion.VERSION_1_8
