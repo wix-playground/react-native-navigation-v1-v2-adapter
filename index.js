@@ -43,6 +43,23 @@ Navigation.startSingleScreenApp = ({ screen, tabsStyle, appStyle, drawer, compon
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
+Navigation.handleDeepLink = ({ link, containerId, payload }) => {
+
+    if (!link) return;
+
+    let event = {
+      type: 'DeepLink',
+      link,
+      ...(payload ? { payload } : {})
+    };
+
+    if(containerId){
+        event.componentId = containerId;
+    }
+
+    Navigation.componentEventsObserver.triggerOnAllListenersByComponentId(event, "handleDeepLink")
+};
+
 Navigation.registerComponent = (name, generator, store, provider) => {
   const Wrapped = class extends React.Component {
     static get options() {
@@ -102,6 +119,12 @@ Navigation.registerComponent = (name, generator, store, provider) => {
           }
         );
       }
+    }
+    
+    handleDeepLink(event){
+        if (this._isRegisteredToNavigatorEvents()) {
+           this.props.navigator.eventFunc(event);
+        }
     }
 
     _isRegisteredToNavigatorEvents() {
