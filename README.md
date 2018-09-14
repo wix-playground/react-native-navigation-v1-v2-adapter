@@ -55,13 +55,13 @@ The adapter does its magic by swizzling a few method and adding another set of m
 First, make sure you have the 2.x version of React Native Navigation installed.
 
 ```
-npm install --save react-native-navigation
+npm install --save react-native-navigation@2
 ```
 
 or
 
 ```
-yarn add react-native-navigation
+yarn add react-native-navigation@2
 ```
 
 
