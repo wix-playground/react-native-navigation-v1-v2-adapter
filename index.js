@@ -7,7 +7,7 @@ import ScreenVisibilityListener from './ScreenVisibilityListener';
 
 navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
 const Navigation = navigationModule.Navigation;
-const appLaunched = false;
+let appLaunched = false;
 const originalRegisterComponent = Navigation.registerComponent.bind(Navigation);
 const originalBindComponent = Navigation.events().bindComponent.bind(Navigation);
 
@@ -111,7 +111,7 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     render() {
       const Component = store ? wrapReduxComponent(generator, store, provider) : generator();
       return (
-        <Component ref={(r) => this.ref = r} {...this.props} />
+        <Component {...this.props} />
       );
     }
   }
