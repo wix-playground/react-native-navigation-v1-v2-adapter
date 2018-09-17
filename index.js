@@ -79,7 +79,7 @@ Navigation.registerComponent = (name, generator, store, provider) => {
       super(props);
       Navigation.events().bindComponent(this);
       
-      window.notificationEventBus.on("rn-nav-handleDeepLink", (event) => {
+      window.notificationEventBus.on(RN_NAV_HANDLEDEEPLINK, (event) => {
         this.handleDeepLink(event);
       });
     }
