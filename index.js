@@ -5,6 +5,8 @@ import * as optionsConverter from './optionsConverter';
 import { wrapReduxComponent, logExecution } from './utils';
 import ScreenVisibilityListener from './ScreenVisibilityListener';
 
+const RN_NAV_HANDLEDEEPLINK = 'rn-nav-handleDeepLink';
+
 navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
 const Navigation = navigationModule.Navigation;
 const appLaunched = false;
@@ -43,21 +45,18 @@ Navigation.startSingleScreenApp = ({ screen, tabsStyle, appStyle, drawer, compon
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
-Navigation.handleDeepLink = ({ link, containerId, payload }) => {
+Navigation.handleDeepLink = ({ link, payload }) => {
+  if (!link) return;
 
-    if (!link) return;
+  let event = {
+    type: 'DeepLink',
+    link,
+    ...(payload ? { payload } : {})
+  };
 
-    let event = {
-      type: 'DeepLink',
-      link,
-      ...(payload ? { payload } : {})
-    };
-
-    if(containerId){
-        event.componentId = containerId;
-    }
-
-    Navigation.componentEventsObserver.triggerOnAllListenersByComponentId(event, "handleDeepLink")
+  setTimeout(() => {
+    window.notificationEventBus.trigger(RN_NAV_HANDLEDEEPLINK, event);
+  }, 200)
 };
 
 Navigation.registerComponent = (name, generator, store, provider) => {
@@ -79,6 +78,10 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     constructor(props) {
       super(props);
       Navigation.events().bindComponent(this);
+      
+      window.notificationEventBus.on("rn-nav-handleDeepLink", (event) => {
+        this.handleDeepLink(event);
+      });
     }
 
     componentDidAppear() {
@@ -122,9 +125,9 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     }
     
     handleDeepLink(event){
-        if (this._isRegisteredToNavigatorEvents()) {
-           this.props.navigator.eventFunc(event);
-        }
+      if (this._isRegisteredToNavigatorEvents()) {
+        this.props.navigator.eventFunc(event);
+      }
     }
 
     _isRegisteredToNavigatorEvents() {
