@@ -63,7 +63,9 @@ export function convertStyle(style = {}, buttons) {
         fontFamily: style.navBarSubtitleFontFamily
       },
       background: {
-        color: style.navBarBackgroundColor
+        color: style.navBarTransparent ? 'transparent' : style.navBarBackgroundColor,
+        translucent: style.navBarTranslucent,
+        blur: style.navBarBlur,
       }
     },
     fab: buttons ? buttons.fab : undefined,
