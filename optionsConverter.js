@@ -78,7 +78,9 @@ export function convertStyle(style = {}, buttons) {
       iconColor: style.tabBarButtonColor,
       selectedIconColor: style.tabBarSelectedButtonColor,
       tabBarTextColor: style.tabBarTextColor,
-      selectedTextColor: style.tabBarSelectedTextColor
+      selectedTextColor: style.tabBarSelectedTextColor,
+      fontFamily: style.tabBarTextFontFamily,
+      fontSize: style.tabBarTextFontSize,
     },
     bottomTabs: {
       visible: style.tabBarHidden ? !style.tabBarHidden : undefined,
