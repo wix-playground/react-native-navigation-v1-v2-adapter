@@ -86,6 +86,19 @@ export function generateNavigator(componentId) {
     resetTo(params) {
       Navigation.setStackRoot(this.id, layoutConverter.convertComponent(params));
     },
+    handleDeepLink({ link, payload }){
+      if (!link) return;
+
+      let event = {
+        type: 'DeepLink',
+        link,
+        ...(payload ? { payload } : {})
+      };
+
+      setTimeout(() => {
+        window.notificationEventBus.trigger("rn-nav-handleDeepLink", event);
+      }, 200)
+    },
     async showModal(params) {
       appendBackHandlerIfNeeded(this, params);
       return await Navigation.showModal(params);
