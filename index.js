@@ -5,8 +5,6 @@ import * as optionsConverter from './optionsConverter';
 import { wrapReduxComponent, logExecution } from './utils';
 import ScreenVisibilityListener from './ScreenVisibilityListener';
 
-const RN_NAV_HANDLEDEEPLINK = 'rn-nav-handleDeepLink';
-
 navigationModule.ScreenVisibilityListener = ScreenVisibilityListener;
 const Navigation = navigationModule.Navigation;
 let appLaunched = false;
@@ -45,20 +43,6 @@ Navigation.startSingleScreenApp = ({ screen, tabsStyle, appStyle, drawer, compon
   appLaunched ? onAppLaunched() : Navigation.events().registerAppLaunchedListener(onAppLaunched);
 };
 
-Navigation.handleDeepLink = ({ link, payload }) => {
-  if (!link) return;
-
-  let event = {
-    type: 'DeepLink',
-    link,
-    ...(payload ? { payload } : {})
-  };
-
-  setTimeout(() => {
-    window.notificationEventBus.trigger(RN_NAV_HANDLEDEEPLINK, event);
-  }, 200)
-};
-
 Navigation.registerComponent = (name, generator, store, provider) => {
   const Wrapped = class extends React.Component {
     static get options() {
@@ -78,10 +62,6 @@ Navigation.registerComponent = (name, generator, store, provider) => {
     constructor(props) {
       super(props);
       Navigation.events().bindComponent(this);
-      
-      window.notificationEventBus.on(RN_NAV_HANDLEDEEPLINK, (event) => {
-        this.handleDeepLink(event);
-      });
     }
 
     componentDidAppear() {
