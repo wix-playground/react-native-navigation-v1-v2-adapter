@@ -168,14 +168,14 @@ yarn add react-native-navigation@2
 
 5.  Edit `MainApplication.java` - Only if your app has a single index file
 
-        	```diff
-        	public class MainApplication extends NavigationApplication {
+    ```diff
+    public class MainApplication extends NavigationApplication {
 
-        	-    @Nullable
-        	-    @Override
-        	-    public String getJSMainModuleName() {
-        	-        return "index";
-        	-    }
+    -    @Nullable
+    -    @Override
+    -    public String getJSMainModuleName() {
+    -        return "index";
+    -    }
 
     - @Override
     - protected ReactNativeHost createReactNativeHost() {
@@ -191,12 +191,11 @@ yarn add react-native-navigation@2
 
 6.  Edit `MainActivity.java`
 
-        	```diff
+    ```diff
 
     - public class MainActivity extends NavigationActivity {
+    + public class MainActivity extends SplashActivity {
 
-    * public class MainActivity extends SplashActivity {
+    }
 
-          	}
-
-          	```
+    ```
