@@ -160,9 +160,9 @@ export function generateNavigator(componentId) {
         }
       });
     },
-    switchToTab(tabIndex) {
-      const options = tabIndex ? {
-        currentTabIndex: tabIndex
+    switchToTab(tab) {
+      const options = tab ? {
+        currentTabIndex: tab.tabIndex
       } : {
           currentTabId: this.id
         };
